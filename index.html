@@ -167,6 +167,10 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 /* Footer */
 .page-foot{padding:20px 28px;text-align:center;font-size:.68rem;color:var(--muted);border-top:1px solid var(--border)}
 
+/* ── SOURCE ROW inside toolbar ── */
+.toolbar-sep-full{width:100%;height:1px;background:var(--border);margin:4px 0}
+.src-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center;width:100%}
+
 /* ── MOBILE FILTER TOGGLE (hidden on desktop) ── */
 .mob-filter-btn{display:none;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--muted2);cursor:pointer;font-size:.8rem;font-weight:600;white-space:nowrap;flex-shrink:0}
 .mob-filter-btn.open{border-color:var(--accent);color:var(--accent);background:#0c1a2e}
@@ -198,8 +202,8 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
   .toolbar{display:none;padding:10px 16px;position:static}
   .toolbar.mob-open{display:flex}
 
-  /* Source filter bar */
-  .src-bar{padding:8px 16px;overflow-x:auto;flex-wrap:nowrap!important;-webkit-overflow-scrolling:touch}
+  /* Source chips wrap no mobile */
+  #src-chips{flex-wrap:wrap!important}
 
   /* Section headers & grid */
   .sec-hdr{padding:14px 16px 8px}
@@ -328,13 +332,14 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
     <option value="days_asc">🕐 Mais recentes</option>
     <option value="company_asc">A–Z Empresa</option>
   </select>
-</div>
 
-<!-- SOURCE FILTER -->
-<div class="src-bar" style="background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-  <span style="font-size:.65rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-right:4px">Fontes</span>
-  <button class="fb on" id="src-all" onclick="setSourceAll(this)" style="font-size:.72rem">Todas as plataformas</button>
-  <div id="src-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+  <!-- SOURCE FILTER — dentro do toolbar para colapsar no mobile -->
+  <div class="toolbar-sep-full"></div>
+  <div class="src-row">
+    <span class="fgroup-label">Fontes</span>
+    <button class="fb on" id="src-all" onclick="setSourceAll(this)" style="font-size:.72rem">Todas</button>
+    <div id="src-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+  </div>
 </div>
 
 <div id="container"></div>
