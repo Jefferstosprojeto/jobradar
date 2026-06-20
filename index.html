@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Radar · Jefferson Santos</title>
+<style>
+:root {
+  --bg:       #080c12;
+  --surface:  #0e1421;
+  --surface2: #131929;
+  --card:     #111827;
+  --card-h:   #161f30;
+  --border:   #1e293b;
+  --border2:  #2d3f55;
+  --text:     #e2e8f0;
+  --muted:    #64748b;
+  --muted2:   #94a3b8;
+  --accent:   #38bdf8;
+  --green:    #4ade80;
+  --green2:   #16a34a;
+  --yellow:   #fbbf24;
+  --yellow2:  #d97706;
+  --red:      #f87171;
+  --red2:     #dc2626;
+  --purple:   #c084fc;
+  --orange:   #fb923c;
+  --teal:     #2dd4bf;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#0e1421 0%,#0a1628 100%);border-bottom:1px solid var(--border);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#0ea5e9,#6366f1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.logo-text h1{font-size:1.05rem;font-weight:700;color:var(--text);letter-spacing:-0.01em}
+.logo-text p{font-size:0.73rem;color:var(--muted);margin-top:2px}
+.header-right{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.meta-chip{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center}
+.meta-chip .val{font-size:1rem;font-weight:700;color:var(--accent)}
+.meta-chip .lbl{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:1px}
+
+/* ── STATS BAR ── */
+.stats-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:stretch;overflow-x:auto}
+.stat{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;gap:3px;min-width:80px;border-right:1px solid var(--border);position:relative;cursor:default;transition:background .15s}
+.stat:hover{background:var(--surface2)}
+.stat:last-child{border-right:none}
+.stat-num{font-size:1.6rem;font-weight:800;line-height:1;letter-spacing:-0.03em}
+.stat-lbl{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em}
+.stat-total .stat-num{color:var(--accent)}
+.stat-high  .stat-num{color:var(--green)}
+.stat-mid   .stat-num{color:var(--yellow)}
+.stat-low   .stat-num{color:var(--red)}
+.stat-new   .stat-num{color:var(--purple)}
+.stat-saved .stat-num{color:var(--orange)}
+
+/* ── LANG / PROFILE BAR ── */
+.profile-bar{background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.pbar-sep{width:1px;height:20px;background:var(--border2);margin:0 6px}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.71rem;font-weight:500;border:1px solid}
+.chip-green {background:#052e16;border-color:#166534;color:var(--green)}
+.chip-yellow{background:#1c1400;border-color:#92400e;color:var(--yellow)}
+.chip-red   {background:#1f0606;border-color:#991b1b;color:var(--red)}
+.chip-blue  {background:#0c1a2e;border-color:#1e40af;color:var(--accent)}
+.chip-muted {background:var(--surface);border-color:var(--border);color:var(--muted2)}
+
+/* ── TOOLBAR ── */
+.toolbar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:20;backdrop-filter:blur(8px)}
+.search-wrap{position:relative;flex:1;min-width:160px;max-width:260px}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem;pointer-events:none}
+.search-box{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:7px 10px 7px 30px;color:var(--text);font-size:.8rem;outline:none;transition:border-color .15s}
+.search-box:focus{border-color:var(--accent)}
+.search-box::placeholder{color:var(--muted)}
+.tsep{width:1px;height:28px;background:var(--border2)}
+.fgroup{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.fgroup-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-right:2px;white-space:nowrap}
+.fb{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;font-size:.75rem;transition:all .15s;white-space:nowrap}
+.fb:hover{border-color:var(--border2);color:var(--text);background:var(--surface2)}
+.fb.on     {background:#1e3a5f;border-color:var(--accent);color:var(--accent);font-weight:600}
+.fb.on-g   {background:#052e16;border-color:var(--green2);color:var(--green);font-weight:600}
+.fb.on-y   {background:#1c1400;border-color:var(--yellow2);color:var(--yellow);font-weight:600}
+.fb.on-r   {background:#1f0606;border-color:var(--red2);color:var(--red);font-weight:600}
+.sort-sel{background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:5px 10px;color:var(--text);font-size:.75rem;cursor:pointer;outline:none}
+
+/* ── SECTION HEADER ── */
+.sec-hdr{padding:20px 28px 10px;display:flex;align-items:center;gap:10px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.sec-hdr::after{content:'';flex:1;height:1px;background:var(--border)}
+.sec-count{background:var(--surface2);border:1px solid var(--border);padding:1px 8px;border-radius:10px}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px;padding:0 28px 14px}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:13px;transition:all .2s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px}
+.card-high::before{background:linear-gradient(180deg,var(--green),#0d9488)}
+.card-mid::before {background:linear-gradient(180deg,var(--yellow),#ea580c)}
+.card-low::before {background:linear-gradient(180deg,var(--red),#9333ea)}
+.card:hover{background:var(--card-h);border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.card.viewed{opacity:.55}
+.card.saved-card{border-color:rgba(251,146,60,.4)}
+
+/* Card top */
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card-company{font-size:.69rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:5px}
+.card-title{font-size:.92rem;font-weight:600;color:var(--text);margin-top:4px;line-height:1.35}
+
+/* Match ring */
+.ring{flex-shrink:0;width:54px;height:54px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid;position:relative;cursor:help}
+.ring-pct{font-size:.85rem;font-weight:800;line-height:1}
+.ring-lbl{font-size:.48rem;text-transform:uppercase;letter-spacing:.08em;opacity:.7}
+.ring-g{border-color:var(--green);color:var(--green);background:radial-gradient(circle,#052e1640 0%,transparent 70%)}
+.ring-y{border-color:var(--yellow);color:var(--yellow);background:radial-gradient(circle,#1c140040 0%,transparent 70%)}
+.ring-r{border-color:var(--red);color:var(--red);background:radial-gradient(circle,#1f060640 0%,transparent 70%)}
+
+/* Tooltip */
+.tip{display:none;position:absolute;top:58px;right:0;z-index:99;background:#1e293b;border:1px solid var(--border2);border-radius:8px;padding:10px 14px;width:170px;font-size:.72rem;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.ring:hover .tip{display:block}
+.tip-title{font-weight:600;color:var(--accent);margin-bottom:7px;font-size:.73rem}
+.tip-row{display:flex;justify-content:space-between;margin-bottom:5px;gap:8px}
+.tip-row:last-child{margin-bottom:0}
+.tip-key{color:var(--muted)}
+.tip-bar{height:4px;border-radius:2px;background:var(--border);margin-top:8px;overflow:hidden}
+.tip-fill{height:100%;border-radius:2px;transition:width .3s}
+
+/* Tags */
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{padding:2px 9px;border-radius:10px;font-size:.68rem;font-weight:500;border:1px solid;white-space:nowrap}
+.tag-dach  {background:#0c1a2e;border-color:#1e3a5f;color:#7dd3fc}
+.tag-eu    {background:#0c2020;border-color:#134e4a;color:var(--teal)}
+.tag-br    {background:#052e16;border-color:#166534;color:var(--green)}
+.tag-remote{background:#052e16;border-color:#166534;color:var(--green)}
+.tag-hybrid{background:#1c1400;border-color:#92400e;color:var(--yellow)}
+.tag-onsite{background:#1f0606;border-color:#991b1b;color:var(--red)}
+.tag-lok   {background:#052e16;border-color:#166534;color:var(--green)}
+.tag-lwarn {background:#1c1400;border-color:#92400e;color:var(--yellow)}
+.tag-lbad  {background:#1f0606;border-color:#991b1b;color:var(--red)}
+.tag-new   {background:#1a0a2e;border-color:#6d28d9;color:var(--purple);animation:blink 2s ease-in-out infinite}
+.tag-days  {background:var(--surface2);border-color:var(--border2);color:var(--muted2)}
+.tag-src   {border:1px solid;font-weight:600}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* Note */
+.card-note{font-size:.75rem;color:var(--muted2);line-height:1.55;padding:8px 10px;background:rgba(255,255,255,.02);border-radius:6px;border-left:2px solid var(--border2)}
+
+/* Footer */
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.salary{font-size:.75rem;font-weight:700;color:var(--green)}
+.card-actions{display:flex;gap:6px}
+.btn-save{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;font-size:.73rem;transition:all .15s}
+.btn-save:hover{border-color:var(--orange);color:var(--orange)}
+.btn-save.saved{background:#1c1400;border-color:var(--orange);color:var(--orange)}
+.btn-apply{padding:6px 16px;border-radius:6px;border:none;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;cursor:pointer;font-size:.75rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:opacity .15s}
+.btn-apply:hover{opacity:.85}
+
+/* Source filter chips */
+.src-chip{padding:4px 11px;border-radius:6px;border:1px solid;font-size:.71rem;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;opacity:.55}
+.src-chip:hover{opacity:.85}
+.src-chip.on{opacity:1;box-shadow:0 0 0 2px rgba(255,255,255,.15)}
+.src-chip.off{opacity:.3;text-decoration:line-through}
+
+/* Empty */
+.empty{text-align:center;padding:80px 24px;color:var(--muted);display:none}
+.empty-icon{font-size:3rem;margin-bottom:14px}
+
+/* Footer */
+.page-foot{padding:20px 28px;text-align:center;font-size:.68rem;color:var(--muted);border-top:1px solid var(--border)}
+
+@media(max-width:640px){
+  .header,.stats-bar,.profile-bar,.toolbar{padding-left:16px;padding-right:16px}
+  .grid{padding-left:16px;padding-right:16px;grid-template-columns:1fr}
+  .sec-hdr{padding-left:16px;padding-right:16px}
+  .stats-bar{gap:0}
+  .stat{min-width:65px;padding:10px 14px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">🎯</div>
+    <div class="logo-text">
+      <h1>Job Radar — SAP Cloud · Datasphere · SAC · BDC</h1>
+      <p>Jefferson Santos · SAP Analytics & Data Architect · 20 anos · Montijo, Portugal · 🇪🇺 EU Passport</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="meta-chip"><div class="val" id="hd-updated">—</div><div class="lbl">Atualizado</div></div>
+    <div class="meta-chip"><div class="val" id="hd-sources">—</div><div class="lbl">Fontes</div></div>
+    <div class="meta-chip"><div class="val" style="color:var(--green)">🔄</div><div class="lbl">Diário auto</div></div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat stat-total"><span class="stat-num" id="s-total">0</span><span class="stat-lbl">Total</span></div>
+  <div class="stat stat-high" title="Match ≥ 80%"><span class="stat-num" id="s-high">0</span><span class="stat-lbl">≥ 80%</span></div>
+  <div class="stat stat-mid"  title="Match 51–79%"><span class="stat-num" id="s-mid">0</span><span class="stat-lbl">51–79%</span></div>
+  <div class="stat stat-low"  title="Match ≤ 50%"><span class="stat-num" id="s-low">0</span><span class="stat-lbl">≤ 50%</span></div>
+  <div class="stat stat-new" ><span class="stat-num" id="s-new">0</span><span class="stat-lbl">Novos</span></div>
+  <div class="stat stat-saved"><span class="stat-num" id="s-saved">0</span><span class="stat-lbl">Guardados</span></div>
+</div>
+
+<!-- PROFILE BAR -->
+<div class="profile-bar">
+  <span class="chip chip-muted" style="font-size:.65rem;font-weight:700;letter-spacing:.06em">LÍNGUAS</span>
+  <span class="chip chip-green">🇧🇷 Português — Nativo (100%)</span>
+  <span class="chip chip-green">🇬🇧 Inglês — Fluente (95%)</span>
+  <span class="chip chip-yellow">🇪🇸 Espanhol — Intermédio (70%)</span>
+  <span class="chip chip-red">🇩🇪 Alemão — N/A (0%)</span>
+  <div class="pbar-sep"></div>
+  <span class="chip chip-muted" style="font-size:.65rem;font-weight:700;letter-spacing:.06em">STACK</span>
+  <span class="chip chip-blue">SAC · Datasphere · BDC</span>
+  <span class="chip chip-blue">BW/4HANA · HANA · ABAP</span>
+  <span class="chip chip-blue">Databricks · Data Lake</span>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-box" id="search" type="text" placeholder="Pesquisar empresa, título…" oninput="applyFilters()">
+  </div>
+  <div class="tsep"></div>
+
+  <div class="fgroup">
+    <span class="fgroup-label">Match</span>
+    <button class="fb on"  data-f="match" data-v="all"  onclick="setF('match','all',this)">Todos</button>
+    <button class="fb"     data-f="match" data-v="high" onclick="setF('match','high',this)">✅ ≥80%</button>
+    <button class="fb"     data-f="match" data-v="mid"  onclick="setF('match','mid',this)">⚠️ 51–79%</button>
+    <button class="fb"     data-f="match" data-v="low"  onclick="setF('match','low',this)">❌ ≤50%</button>
+  </div>
+  <div class="tsep"></div>
+
+  <div class="fgroup">
+    <span class="fgroup-label">Região</span>
+    <button class="fb on"  data-f="region" data-v="all"    onclick="setF('region','all',this)">🌍 Todas</button>
+    <button class="fb"     data-f="region" data-v="dach"   onclick="setF('region','dach',this)">🇩🇪 DACH</button>
+    <button class="fb"     data-f="region" data-v="eu"     onclick="setF('region','eu',this)">🇪🇺 EU</button>
+    <button class="fb"     data-f="region" data-v="brazil" onclick="setF('region','brazil',this)">🇧🇷 Brasil</button>
+  </div>
+  <div class="tsep"></div>
+
+  <div class="fgroup">
+    <span class="fgroup-label">Regime</span>
+    <button class="fb on"  data-f="regime" data-v="all"    onclick="setF('regime','all',this)">Todos</button>
+    <button class="fb"     data-f="regime" data-v="remote"  onclick="setF('regime','remote',this)">🌐 Remoto</button>
+    <button class="fb"     data-f="regime" data-v="hybrid"  onclick="setF('regime','hybrid',this)">🔀 Híbrido</button>
+    <button class="fb"     data-f="regime" data-v="onsite"  onclick="setF('regime','onsite',this)">🏢 Onsite</button>
+  </div>
+  <div class="tsep"></div>
+
+  <div class="fgroup">
+    <span class="fgroup-label">Publicação</span>
+    <button class="fb"     data-f="age" data-v="30"  onclick="setF('age','30',this)">≤ 30 dias</button>
+    <button class="fb on"  data-f="age" data-v="60"  onclick="setF('age','60',this)">≤ 2 meses</button>
+    <button class="fb"     data-f="age" data-v="all" onclick="setF('age','all',this)">Todas</button>
+  </div>
+  <div class="tsep"></div>
+
+  <div class="fgroup">
+    <button class="fb" data-f="special" data-v="new"   onclick="setF('special','new',this)">🆕 Novos</button>
+    <button class="fb" data-f="special" data-v="saved" onclick="setF('special','saved',this)">⭐ Guardados</button>
+  </div>
+  <div class="tsep"></div>
+
+  <select class="sort-sel" id="sort-by" onchange="applyFilters()">
+    <option value="match_desc">↓ Match %</option>
+    <option value="match_asc">↑ Match %</option>
+    <option value="days_asc">🕐 Mais recentes</option>
+    <option value="company_asc">A–Z Empresa</option>
+  </select>
+</div>
+
+<!-- SOURCE FILTER -->
+<div style="background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+  <span style="font-size:.65rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-right:4px">Fontes</span>
+  <button class="fb on" id="src-all" onclick="setSourceAll(this)" style="font-size:.72rem">Todas as plataformas</button>
+  <div id="src-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+</div>
+
+<div id="container"></div>
+<div class="empty" id="empty"><div class="empty-icon">🔍</div><div>Nenhuma vaga para estes filtros.</div></div>
+<div class="page-foot">Job Radar · Jefferson Santos · Dados actualizados diariamente · <span id="ft-total">0</span> vagas · <span id="ft-sources">0</span> fontes</div>
+
+<script>
+// ─────────────────────────────────────────────────
+// SOURCE COLOURS & ICONS
+// ─────────────────────────────────────────────────
+const SRC = {
+  'RemoteRocketship': {bg:'#052e16',border:'#16a34a',color:'#4ade80',icon:'🚀'},
+  'StepStone':        {bg:'#1c0800',border:'#c2410c',color:'#fb923c',icon:'💼'},
+  'FreelancerMap':    {bg:'#0c1a2e',border:'#1d4ed8',color:'#60a5fa',icon:'🗺️'},
+  'Duerenhoff':       {bg:'#1a0a2e',border:'#7c3aed',color:'#c084fc',icon:'🔷'},
+  'Ratbacher':        {bg:'#1f0606',border:'#dc2626',color:'#f87171',icon:'🎯'},
+  'Remotely.de':      {bg:'#052e16',border:'#15803d',color:'#86efac',icon:'🌍'},
+  'Gupy':             {bg:'#1c0e00',border:'#b45309',color:'#fcd34d',icon:'🇧🇷'},
+  'Nerdin':           {bg:'#0c2020',border:'#0d9488',color:'#2dd4bf',icon:'💻'},
+  'WomenTechNetwork': {bg:'#1f0618',border:'#be185d',color:'#f9a8d4',icon:'👩‍💻'},
+  'RedGlobal':        {bg:'#1f0606',border:'#b91c1c',color:'#fca5a5',icon:'🌐'},
+  'SourceGroupInt':   {bg:'#0c1a2e',border:'#4338ca',color:'#a5b4fc',icon:'🔍'},
+  'Dataciders':       {bg:'#0c2020',border:'#0891b2',color:'#67e8f9',icon:'📊'},
+  'CareersPage':      {bg:'#1a0a2e',border:'#9333ea',color:'#d8b4fe',icon:'📋'},
+  'RetailSolutions':  {bg:'#0c1a2e',border:'#0369a1',color:'#7dd3fc',icon:'🛍️'},
+  'Jobijoba':         {bg:'#1f0612',border:'#e11d48',color:'#fda4af',icon:'🇧🇷'},
+  'Quickin':          {bg:'#052e16',border:'#15803d',color:'#86efac',icon:'⚡'},
+};
+function srcStyle(src){return SRC[src]||{bg:'#1a1a2e',border:'#334155',color:'#94a3b8',icon:'🔗'}}
+
+// ─────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────
+const JOBS_DATA = {"meta":{"last_updated":"2026-06-20T10:30:00Z","version":"1.0","profile":{"name":"Jefferson Santos","title":"SAP Analytics & Data Architect","location":"Montijo, Portugal","eu_passport":true,"languages":{"portuguese":100,"english":95,"spanish":70,"german":0},"key_skills":["SAP Datasphere","SAP Analytics Cloud","SAP BDC","BW/4HANA","SAP HANA","SAP BPC","ABAP","Databricks","CDS Views","Data Lake"]},"sources_searched":["LinkedIn","Duerenhoff","Ratbacher","RemoteRocketship","StepStone","FreelancerMap","RedGlobal","SourceGroupInt","Remotely.de","Gupy","Nerdin","Jobijoba","MelhoresEmpregos","XING","WomenTechNetwork","Remotive","Jobgether","Indeed"]},"jobs":[{"id":"windhoff-datasphere-remote","title":"Senior Consultant — SAP BW / SAP Datasphere","company":"Windhoff Group","region":"dach","country":"Alemanha","flag":"🇩🇪","source":"RemoteRocketship","regime":"remote","regime_label":"Worldwide Remote","language_required":"english","language_label":"🇬🇧 Inglês","match_score":95,"match_breakdown":{"language":95,"technical":98,"regime":100},"salary":"~€90–130k","note":"Empresa alemã com escopo global. Inglês suficiente. Stack perfeito. Regime worldwide remote — ideal.","date_found":"2026-06-19","is_new":true,"url":"https://www.remoterocketship.com/company/windhoff-karriere-de/jobs/senior-consultant-data-engineering-sap-bw-sap-datasphere-worldwide-remote/"},{"id":"dataciders-sap-analytics","title":"Senior IT Consultant — SAP Data & Analytics","company":"Dataciders","region":"dach","country":"Alemanha","flag":"🇩🇪","source":"Dataciders","regime":"remote","regime_label":"Flexível / Remoto","language_required":"english","language_label":"🇬🇧 Inglês","match_score":88,"match_breakdown":{"language":90,"technical":95,"regime":90},"salary":"~€90–120k","note":"Empresa especializada SAP Data & Analytics. Trabalho em inglês. Bom nome para o CV.","date_found":"2026-06-19","is_new":true,"url":"https://dataciders.com/en/stelle/senior-it-consultant-m-w-d-sap-data-analytics/"},{"id":"sapjobs-datasphere-architect","title":"SAP Business Data Cloud / Datasphere Solution Architect","company":"Computer Futures","region":"dach","country":"Alemanha (várias cidades)","flag":"🇩🇪","source":"StepStone","regime":"hybrid","regime_label":"Híbrido — várias cidades","language_required":"german","language_label":"🇩🇪 Alemão provável","match_score":48,"match_breakdown":{"language":25,"technical":98,"regime":75},"salary":"~€100–140k","note":"Fit técnico perfeito (BDC + Datasphere). Barreira principal: alemão. Vale enviar CV em inglês para testar.","date_found":"2026-06-19","is_new":true,"url":"https://www.stepstone.de/stellenangebote--SAP-Business-Data-Cloud-Datasphere-Solution-Architect-m-w-d-deutschlandweit-Hamburg-Hannover-Berlin-Stuttgart-Duesseldorf-Koeln-Muenchen-Computer-Futures--13458441-inline.html"},{"id":"sapse-data-architect-walldorf","title":"Senior Consultant — Business Data Strategy & Advisory / Data Architect","company":"SAP SE","region":"dach","country":"Walldorf, Alemanha","flag":"🇩🇪","source":"StepStone","regime":"hybrid","regime_label":"Híbrido","language_required":"english","language_label":"🇬🇧 Inglês (SAP HQ)","match_score":87,"match_breakdown":{"language":88,"technical":98,"regime":70},"salary":"~€100–150k","note":"SAP HQ em Walldorf. Empresa trabalha em inglês internamente. Prestígio máximo. Presença física pode ser exigida.","date_found":"2026-06-18","is_new":false,"url":"https://www.stepstone.de/stellenangebote--Senior-Consultant-f-m-d-Business-Data-Strategy-Advisory-Data-Architect-f-m-d-Walldorf-DE-69190-SAP-SE--13687475-inline.html"},{"id":"pwc-datasphere-sac-specialist","title":"SAP Datasphere & Analytics Cloud Specialist","company":"PwC","region":"dach","country":"Alemanha (Berlim/Düsseldorf/Frankfurt/Hamburgo)","flag":"🇩🇪","source":"StepStone","regime":"hybrid","regime_label":"Híbrido","language_required":"german","language_label":"🇩🇪 Alemão + Inglês","match_score":52,"match_breakdown":{"language":30,"technical":98,"regime":70},"salary":"~€90–130k","note":"PwC trabalha em inglês internamente. Stack perfeito. Exige alemão para clientes. EU Passport é vantagem.","date_found":"2026-06-17","is_new":false,"url":"https://www.stepstone.de/stellenangebote--SAP-Datasphere-and-Analytics-Cloud-Specialist-f-m-d-Berlin-Duesseldorf-Muenchen-Frankfurt-am-Main-Hamburg-Hannover-PwC--12611600-inline.html"},{"id":"adesso-sap-analytics-consultant","title":"Senior SAP Analytics Consultant","company":"adesso SE","region":"dach","country":"Alemanha (várias cidades)","flag":"🇩🇪","source":"StepStone","regime":"hybrid","regime_label":"Híbrido","language_required":"german","language_label":"🇩🇪 Alemão obrigatório","match_score":38,"match_breakdown":{"language":20,"technical":95,"regime":70},"salary":"~€80–120k","note":"Grande consultora alemã. Alemão obrigatório para interação com clientes.","date_found":"2026-06-15","is_new":false,"url":"https://www.stepstone.de/stellenangebote--Senior-SAP-Analytics-Consultant-all-genders-Berlin-Bremen-Dresden-Hamburg-Jena-Kiel-Leipzig-Neumuenster-Rostock-Stralsund-adesso-SE--13758217-inline.html"},{"id":"haribo-sap-bw-bdc","title":"(Senior) Consultant SAP BI / BW / BDC Data Engineering","company":"HARIBO Deutschland","region":"dach","country":"Grafschaft, Bonn — Alemanha","flag":"🇩🇪","source":"StepStone","regime":"onsite","regime_label":"Presencial / Onsite","language_required":"german","language_label":"🇩🇪 Alemão obrigatório","match_score":30,"match_breakdown":{"language":20,"technical":97,"regime":30},"salary":"—","note":"Posição inhouse HARIBO. Presencial + alemão. Dois bloqueadores. Stack excelente mas inadequado para o perfil remoto.","date_found":"2026-06-14","is_new":false,"url":"https://www.stepstone.de/stellenangebote--Senior-Consultant-SAP-BI-BW-BDC-Data-Engineering-m-w-d-Grafschaft-bei-Bonn-HARIBO-Deutschland--13698610-inline.html"},{"id":"duerenhoff-datasphere-hamburg","title":"Senior Consultant/Manager — SAP Datasphere / BW / SAC","company":"Duerenhoff","region":"dach","country":"Hamburgo, Alemanha","flag":"🇩🇪","source":"Duerenhoff","regime":"hybrid","regime_label":"60–70% Remoto","language_required":"german","language_label":"🇩🇪 Alemão obrigatório","match_score":38,"match_breakdown":{"language":20,"technical":98,"regime":80},"salary":"~€100–140k","note":"Recrutadora SAP especialista DACH. Exige fluência em alemão. Stack perfeito.","date_found":"2026-06-19","is_new":true,"url":"https://www.duerenhoff.de/sap-job/job-senior-consultant-senior-manager-sap-datasphere-bw-sac-m-w-d-remote-60-70-hamburg-id21078"},{"id":"ratbacher-datasphere-bdc","title":"SAP Datasphere, BDC & SAC Berater — BW/4HANA","company":"Ratbacher","region":"dach","country":"Alemanha","flag":"🇩🇪","source":"Remotely.de","regime":"remote","regime_label":"Remoto","language_required":"german","language_label":"🇩🇪 Alemão obrigatório","match_score":36,"match_breakdown":{"language":20,"technical":97,"regime":90},"salary":"—","note":"Recrutadora top DACH para SAP. Exige alemão. BDC é stack raro — vale contactar mesmo assim.","date_found":"2026-06-16","is_new":false,"url":"https://www.remotely.de/job/ratbacher-sap-datasphere-bdc-sac-berater-mwd-sap-consultant-bw4hana"},{"id":"freelancermap-datasphere-migration","title":"SAP Datasphere Migration Lead","company":"FreelancerMap (cliente anónimo)","region":"eu","country":"Europa — Remote EU","flag":"🇪🇺","source":"FreelancerMap","regime":"remote","regime_label":"Remote EU timezone","language_required":"english","language_label":"🇬🇧 Inglês","match_score":94,"match_breakdown":{"language":95,"technical":98,"regime":100},"salary":"Freelance / contrato","note":"Projecto freelance de migração Datasphere — o teu ponto forte. EU timezone. Publicado Jun 2026.","date_found":"2026-06-12","is_new":false,"url":"https://www.freelancermap.com/project/sap-datasphere-migration-lead-remote-eu-time-zone"},{"id":"redglobal-sac-planning","title":"SAC Planning Consultant","company":"Red Global","region":"eu","country":"Europa — Remoto","flag":"🇪🇺","source":"RedGlobal","regime":"remote","regime_label":"Remoto EU","language_required":"english","language_label":"🇬🇧 Inglês","match_score":91,"match_breakdown":{"language":95,"technical":95,"regime":100},"salary":"—","note":"Red Global é recrutadora internacional SAP. SAC Planning — tens BPC + SAC no CV. Forte candidatura.","date_found":"2026-06-11","is_new":false,"url":"https://www.redglobal.com/jobs/job/sac-planning-consultant/GdmtztGS"},{"id":"sourcegroup-sac-planning-bucharest","title":"SAP Analytics Cloud (SAC) Planning Consultant","company":"Source Group International","region":"eu","country":"Bucareste, Roménia","flag":"🇷🇴","source":"SourceGroupInt","regime":"hybrid","regime_label":"Híbrido","language_required":"english","language_label":"🇬🇧 Inglês","match_score":88,"match_breakdown":{"language":90,"technical":95,"regime":75},"salary":"—","note":"Bucareste. Inglês suficiente. SAC Planning — tens experiência directa. EU Passport válido para Roménia.","date_found":"2026-06-11","is_new":false,"url":"https://www.sourcegroupinternational.com/jobs/sap-analytics-cloud-sac-planning-consultant-31810157/"},{"id":"ey-sap-bi-datasphere-katowice","title":"SAP BI / SAC / Datasphere Senior Consultant","company":"EY (Ernst & Young)","region":"eu","country":"Katowice, Polónia","flag":"🇵🇱","source":"WomenTechNetwork","regime":"hybrid","regime_label":"Híbrido","language_required":"english","language_label":"🇬🇧 Inglês","match_score":92,"match_breakdown":{"language":90,"technical":97,"regime":75},"salary":"~€60–90k","note":"EY global — trabalha em inglês. Stack perfeito SAP BI+SAC+Datasphere. Boa marca para o CV.","date_found":"2026-06-05","is_new":false,"url":"https://www.womentech.net/job/ey/katowice/sap-bisacdatasphere-senior-consultant"},{"id":"retailsolutions-sac-datasphere","title":"SAP Analytics Consultant — SAC / Datasphere / BDC","company":"retailsolutions AG","region":"eu","country":"Europa — Remoto","flag":"🇪🇺","source":"RetailSolutions","regime":"remote","regime_label":"Remoto EU","language_required":"english","language_label":"🇬🇧 Inglês","match_score":87,"match_breakdown":{"language":90,"technical":97,"regime":100},"salary":"—","note":"Empresa SAP especializada em retail. SAC+Datasphere+BDC — os 3 pilares do teu stack actual.","date_found":"2026-06-07","is_new":false,"url":"https://www.retailsolutions.co.uk/karriere/professionals/job-offers/sap-service-delivery-manager-m-f-d-1"},{"id":"adv-techminds-sac-datasphere","title":"SAP SAC & Datasphere Consultant","company":"ADV TechMinds","region":"eu","country":"Europa — Remoto","flag":"🇪🇺","source":"CareersPage","regime":"remote","regime_label":"Remoto","language_required":"english","language_label":"🇬🇧 Inglês","match_score":90,"match_breakdown":{"language":92,"technical":97,"regime":100},"salary":"Freelance","note":"Projecto freelance SAC + Datasphere. Remoto. Fit técnico e linguístico excelente.","date_found":"2026-06-13","is_new":false,"url":"https://www.careers-page.com/freelancer-career/job/5WR8W993"},{"id":"syntax-systems-sap-analytics","title":"Senior Consultant — Data & Analytics (SAP)","company":"Syntax Systems","region":"eu","country":"Alemanha / Europa","flag":"🇩🇪","source":"Remotely.de","regime":"remote","regime_label":"Remoto","language_required":"german_possible","language_label":"🇩🇪 Alemão provável","match_score":52,"match_breakdown":{"language":30,"technical":97,"regime":90},"salary":"~€90–120k","note":"Empresa alemã internacional — pode aceitar inglês. Vale verificar. Stack muito alinhado.","date_found":"2026-06-08","is_new":false,"url":"https://www.remotely.de/job/syntax-systems-gmbh-co-kg-senior-consultant-mwd-data-analytics-fokus-sap"},{"id":"ey-malaga-bw-sac-german","title":"SAP BW / SAC Analytics Cloud — German Speaker","company":"EY GDS Spain","region":"eu","country":"Málaga, Espanha","flag":"🇪🇸","source":"WomenTechNetwork","regime":"hybrid","regime_label":"Híbrido","language_required":"german","language_label":"🇩🇪 Alemão obrigatório","match_score":40,"match_breakdown":{"language":20,"technical":97,"regime":70},"salary":"—","note":"Exige explicitamente German Speaker. Apesar de ser em Espanha, barreira de língua persiste.","date_found":"2026-05-15","is_new":false,"url":"https://www.womentech.net/job/ey/malaga/sap-bw-sac-analytics-cloud-german-speaker-ey-gds-spain-hybrid"},{"id":"minsait-datasphere-brasil","title":"Consultor SAP Datasphere","company":"Minsait (Indra)","region":"brazil","country":"Brasil — Remoto","flag":"🇧🇷","source":"Gupy","regime":"remote","regime_label":"Remoto","language_required":"portuguese","language_label":"🇧🇷 Português","match_score":98,"match_breakdown":{"language":100,"technical":98,"regime":100},"salary":"CLT / PJ","note":"Minsait é grupo Indra, empresa sólida. Datasphere — stack central do teu perfil. Fit perfeito.","date_found":"2026-04-24","is_new":false,"url":"https://minsait.gupy.io/jobs/11159478?jobBoardSource=gupy_public_page"},{"id":"solveplan-sac-planning-brasil","title":"Consultor(a) SAP Analytics Cloud Planning","company":"SolvePlan","region":"brazil","country":"Brasil — Remoto","flag":"🇧🇷","source":"Gupy","regime":"remote","regime_label":"Remoto","language_required":"portuguese","language_label":"🇧🇷 Português","match_score":97,"match_breakdown":{"language":100,"technical":97,"regime":100},"salary":"PJ","note":"SolvePlan especializada em SAC. SAC Planning — tens BPC + SAC Planning no CV. Candidatura muito forte.","date_found":"2026-03-24","is_new":false,"url":"https://solveplan.gupy.io/jobs/11036248?jobBoardSource=gupy_public_page"},{"id":"ultracon-datasphere-sac-worldwide","title":"SAP Datasphere & SAC Consultant","company":"UltraCon Consultoria","region":"brazil","country":"Brasil — Worldwide Remote","flag":"🇧🇷","source":"RemoteRocketship","regime":"remote","regime_label":"Worldwide Remote","language_required":"portuguese","language_label":"🇧🇷🇬🇧 PT + EN","match_score":97,"match_breakdown":{"language":98,"technical":98,"regime":100},"salary":"PJ","note":"Consultora brasileira com clientes globais. Inglês é diferencial positivo — tens fluente.","date_found":"2025-11-07","is_new":false,"url":"https://www.remoterocketship.com/company/ultracon-com-br/jobs/sap-datasphere-sac-consultant-worldwide-remote/"},{"id":"verus-datasphere-datalake","title":"Consultor SAP Datasphere & DataLake","company":"Verus Brasil","region":"brazil","country":"Brasil — Remoto","flag":"🇧🇷","source":"RemoteRocketship","regime":"remote","regime_label":"Remoto","language_required":"portuguese","language_label":"🇧🇷 Português","match_score":98,"match_breakdown":{"language":100,"technical":99,"regime":100},"salary":"PJ / CLT","note":"Datasphere + Data Lake — AXA (experiência actual) usa exactamente este stack. CV é prova directa.","date_found":"2026-04-17","is_new":false,"url":"https://www.remoterocketship.com/br/empresa/verusbrasil-com-br/vagas/consultor-sap-datasphere-datalake-brasil-remoto/"},{"id":"verus-sac-planning","title":"Consultor SAP SAC Planning Sênior","company":"Verus Brasil","region":"brazil","country":"Brasil — Remoto","flag":"🇧🇷","source":"Quickin","regime":"remote","regime_label":"Remoto","language_required":"portuguese","language_label":"🇧🇷 Português","match_score":96,"match_breakdown":{"language":100,"technical":96,"regime":100},"salary":"PJ / CLT","note":"SAC Planning Sênior. Tens BPC Embedded + SAC Planning no CV (Siemens). Candidatura muito forte.","date_found":"2026-04-17","is_new":false,"url":"https://jobs.quickin.io/verus/jobs/69ebade258524000137f543c"},{"id":"nerdin-datasphere-sac-sp","title":"Especialista Datasphere e SAC BI Sênior","company":"Nerdin Vagas TI","region":"brazil","country":"São Paulo — Remoto","flag":"🇧🇷","source":"Nerdin","regime":"remote","regime_label":"Remoto SP","language_required":"portuguese","language_label":"🇧🇷 Português","match_score":97,"match_breakdown":{"language":100,"technical":97,"regime":100},"salary":"—","note":"Plataforma TI Brasil. Sênior. Datasphere + SAC — stack principal do teu repositório actual.","date_found":"2026-06-19","is_new":true,"url":"https://www.nerdin.com.br/vaga_emprego/vaga-especialista-datasphere-e-sac-bi-snior-remoto-so-paulo-95510.php"},{"id":"jobijoba-sap-analytics-databricks","title":"Especialista SAP Analytics Sênior — SAC / Datasphere / Databricks","company":"Jobijoba","region":"brazil","country":"São Paulo","flag":"🇧🇷","source":"Jobijoba","regime":"hybrid","regime_label":"Híbrido SP","language_required":"portuguese","language_label":"🇧🇷 Português","match_score":96,"match_breakdown":{"language":100,"technical":99,"regime":80},"salary":"—","note":"Inclui Databricks — competência que tens da AXA (PySpark + Delta Lake). Diferencial raro no mercado.","date_found":"2026-06-19","is_new":true,"url":"https://www.jobijoba.com.br/detail/97/5d36c2cdee0276fa25b6d2eb5271a503"},{"id":"windhoff-lead-data-engineering","title":"Lead Consultant — SAP Data Engineering (BW · Datasphere · BDC)","company":"Windhoff Group","region":"dach","country":"Alemanha","flag":"🇩🇪","source":"Remotive","regime":"remote","regime_label":"100% Remoto","language_required":"german","language_label":"🇩🇪 Alemão C1 obrigatório","match_score":38,"match_breakdown":{"language":20,"technical":99,"regime":100},"salary":"—","note":"Lead role em Windhoff, especialista SAP data. Stack raro e completo: BW/BW4HANA + Datasphere + BDC + Databricks. Alemão C1 é o único bloqueador. 100% remoto. Publicado há ~1 mês.","date_found":"2026-05-20","is_new":false,"url":"https://join.com/companies/windhoff-group/16056882-lead-consultant-m-w-d-sap-data-engineering?pid=aae2f260d3eca542896a"},{"id":"talan-datasphere-expert-eu","title":"SAP Datasphere Expert","company":"Talan","region":"eu","country":"França / Europa — Worldwide Remote","flag":"🇪🇺","source":"RemoteRocketship","regime":"remote","regime_label":"Worldwide Remote","language_required":"english","language_label":"🇬🇧 Inglês (+ Francês vantagem)","match_score":89,"match_breakdown":{"language":90,"technical":96,"regime":100},"salary":"—","note":"Talan é consultora internacional com operações em França, Espanha e EU. SAP Datasphere Expert. 6-10 anos exigidos. Inglês suficiente. Worldwide remote.","date_found":"2026-06-10","is_new":false,"url":"https://www.remoterocketship.com/company/talan/jobs/sap-datasphere-expert-worldwide-remote/"},{"id":"hcltech-sap-bw-hana-brasil","title":"SAP BW HANA Consultant","company":"HCLTech","region":"brazil","country":"Brasil — Remoto","flag":"🇧🇷","source":"LinkedIn","regime":"remote","regime_label":"Remoto","language_required":"portuguese","language_label":"🇧🇷 Português","match_score":96,"match_breakdown":{"language":100,"technical":96,"regime":100},"salary":"—","note":"HCLTech é empresa global de TI com grande prática SAP. SAP BW/HANA + Datasphere + SAC + S/4HANA Analytics. Remoto Brasil. Publicado há 2 dias.","date_found":"2026-06-18","is_new":true,"url":"https://careers.hcltech.com/go/Brazil/9554855/"},{"id":"thewhiteam-analytics-lead-spain","title":"Reporting & Analytics Delivery Lead — SAP BW/BW4HANA · BDC · Databricks","company":"The Whiteam Consulting","region":"eu","country":"Espanha — 100% Remoto","flag":"🇪🇸","source":"Jobgether","regime":"remote","regime_label":"100% Remoto (viagem pontual a Munique)","language_required":"spanish","language_label":"🇪🇸 Espanhol + Inglês","match_score":83,"match_breakdown":{"language":70,"technical":98,"regime":90},"salary":"—","note":"Projecto internacional de longa duração. Stack muito alinhado: BW/BW4HANA + SAP BDC + Power BI + Databricks. 100% remoto de Espanha, ocasionalmente Munique. Espanhol intermédio + inglês fluente dão cobertura.","date_found":"2026-06-10","is_new":false,"url":"https://jobgether.com/offer/69d8d170aba5fafcee046499-reporting-analytics-delivery-lead---sap-bw-bw4hana-power-bi-snowflake-databricks---100-remoto-espana"}]};
+
+// ─────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────
+const state = { match:'all', region:'all', regime:'all', special:null, age:'60' };
+let activeSources = new Set(); // empty = all
+let allJobs = [];
+let savedIds  = new Set(JSON.parse(localStorage.getItem('jrSaved')  || '[]'));
+let viewedIds = new Set(JSON.parse(localStorage.getItem('jrViewed') || '[]'));
+
+// ─────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────
+function daysAgo(dateStr) {
+  const d = Math.floor((new Date() - new Date(dateStr)) / 86400000);
+  if (d === 0) return 'Hoje';
+  if (d === 1) return '1 dia';
+  if (d < 7)   return `${d} dias`;
+  if (d < 30)  return `${Math.round(d/7)}sem`;
+  return `${Math.round(d/30)}m`;
+}
+function matchRange(s){ return s>=80?'high':s>50?'mid':'low' }
+function ringCls(s)   { return s>=80?'ring-g':s>50?'ring-y':'ring-r' }
+function cardCls(s)   { return s>=80?'card-high':s>50?'card-mid':'card-low' }
+function regimeCls(r) { return r==='remote'?'tag-remote':r==='hybrid'?'tag-hybrid':'tag-onsite' }
+function langCls(l)   { return l==='english'||l==='portuguese'?'tag-lok':l==='german_possible'?'tag-lwarn':'tag-lbad' }
+function regionCls(r) { return r==='dach'?'tag-dach':r==='eu'?'tag-eu':'tag-br' }
+function regionLabel(r){ return r==='dach'?'🇩🇪 DACH':r==='eu'?'🇪🇺 EU':'🇧🇷 Brasil' }
+
+// ─────────────────────────────────────────────────
+// SOURCE FILTER
+// ─────────────────────────────────────────────────
+const SECTIONS = [
+  {key:'dach',  label:'🇩🇪  DACH — Alemanha · Áustria · Suíça'},
+  {key:'eu',    label:'🇪🇺  União Europeia · Freelance / Contrato'},
+  {key:'brazil',label:'🇧🇷  Brasil'},
+];
+
+function buildSourceChips() {
+  const sources = [...new Set(allJobs.map(j=>j.source))].sort();
+  const wrap = document.getElementById('src-chips');
+  wrap.innerHTML = '';
+  sources.forEach(src => {
+    const s = srcStyle(src);
+    const btn = document.createElement('button');
+    btn.className = 'src-chip on';
+    btn.dataset.src = src;
+    btn.style.cssText = `background:${s.bg};border-color:${s.border};color:${s.color}`;
+    btn.innerHTML = `${s.icon} ${src}`;
+    btn.onclick = () => toggleSource(src, btn);
+    wrap.appendChild(btn);
+  });
+}
+
+function toggleSource(src, btn) {
+  document.getElementById('src-all').classList.remove('on');
+  if (activeSources.has(src)) {
+    activeSources.delete(src);
+    btn.classList.remove('on'); btn.classList.add('off');
+  } else {
+    activeSources.add(src);
+    btn.classList.remove('off'); btn.classList.add('on');
+  }
+  if (activeSources.size === 0) setSourceAll(document.getElementById('src-all'));
+  else applyFilters();
+}
+
+function setSourceAll(btn) {
+  activeSources.clear();
+  document.querySelectorAll('.src-chip').forEach(c=>{ c.classList.add('on'); c.classList.remove('off'); });
+  btn.classList.add('on');
+  applyFilters();
+}
+
+// ─────────────────────────────────────────────────
+// FILTER & SORT
+// ─────────────────────────────────────────────────
+function setF(type, val, btn) {
+  if (type === 'special') {
+    if (state.special === val) { state.special=null; btn.classList.remove('on','on-g','on-y','on-r'); }
+    else {
+      document.querySelectorAll('[data-f="special"]').forEach(b=>b.classList.remove('on','on-g','on-y','on-r'));
+      state.special = val; btn.classList.add('on');
+    }
+  } else {
+    document.querySelectorAll(`[data-f="${type}"]`).forEach(b=>b.classList.remove('on','on-g','on-y','on-r'));
+    state[type] = val;
+    const cls = val==='high'?'on-g':val==='mid'?'on-y':val==='low'?'on-r':'on';
+    btn.classList.add(cls);
+  }
+  applyFilters();
+}
+
+function applyFilters() {
+  const q    = document.getElementById('search').value.toLowerCase().trim();
+  const sort = document.getElementById('sort-by').value;
+
+  const VALID_REGIONS = new Set(['dach','eu','brazil']);
+
+  let list = allJobs.filter(j => {
+    if (!VALID_REGIONS.has(j.region)) return false; // bloqueia qualquer região fora do scope
+    if (state.match  !=='all' && matchRange(j.match_score) !== state.match) return false;
+    if (state.region !=='all' && j.region !== state.region) return false;
+    if (state.regime !=='all' && j.regime !== state.regime) return false;
+    if (state.special==='new'   && !j.is_new)              return false;
+    if (state.special==='saved' && !savedIds.has(j.id))    return false;
+    if (activeSources.size > 0 && !activeSources.has(j.source)) return false;
+    if (state.age !== 'all') {
+      const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - parseInt(state.age));
+      if (new Date(j.date_found) < cutoff) return false;
+    }
+    if (q && !`${j.title} ${j.company} ${j.note} ${j.country} ${j.source}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  list.sort((a,b) => {
+    if (sort==='match_desc')  return b.match_score - a.match_score;
+    if (sort==='match_asc')   return a.match_score - b.match_score;
+    if (sort==='days_asc')    return new Date(b.date_found) - new Date(a.date_found);
+    if (sort==='company_asc') return a.company.localeCompare(b.company);
+    return 0;
+  });
+
+  render(list);
+  updateStats();
+}
+
+// ─────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────
+function render(jobs) {
+  const wrap  = document.getElementById('container');
+  const empty = document.getElementById('empty');
+  wrap.innerHTML = '';
+  if (!jobs.length) { empty.style.display='block'; return; }
+  empty.style.display = 'none';
+
+  const byRegion = {};
+  jobs.forEach(j => (byRegion[j.region] = byRegion[j.region]||[]).push(j));
+
+  SECTIONS.forEach(sec => {
+    const grp = byRegion[sec.key];
+    if (!grp?.length) return;
+    const hdr = document.createElement('div');
+    hdr.className = 'sec-hdr';
+    hdr.innerHTML = `${sec.label} <span class="sec-count">${grp.length}</span>`;
+    wrap.appendChild(hdr);
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    grp.forEach(j => grid.appendChild(card(j)));
+    wrap.appendChild(grid);
+  });
+}
+
+function card(job) {
+  const isSaved  = savedIds.has(job.id);
+  const isViewed = viewedIds.has(job.id);
+  const bd  = job.match_breakdown || {};
+  const s   = job.match_score;
+  const sc  = srcStyle(job.source);
+  const days = daysAgo(job.date_found);
+
+  const el = document.createElement('div');
+  el.className = `card ${cardCls(s)}${isViewed?' viewed':''}${isSaved?' saved-card':''}`;
+  el.id = `c-${job.id}`;
+
+  // tip fill widths
+  const lw = bd.language||0, tw = bd.technical||0, rw = bd.regime||0;
+  const lc = lw>=80?'#4ade80':lw>=50?'#fbbf24':'#f87171';
+  const tc = tw>=80?'#4ade80':tw>=50?'#fbbf24':'#f87171';
+  const rc = rw>=80?'#4ade80':rw>=50?'#fbbf24':'#f87171';
+
+  el.innerHTML = `
+    <div class="card-top">
+      <div style="flex:1;min-width:0">
+        <div class="card-company">${job.flag||''} ${job.company} <span style="color:var(--border2)">·</span> ${job.country}</div>
+        <div class="card-title">${job.title}</div>
+      </div>
+      <div class="ring ${ringCls(s)}">
+        <div class="ring-pct">${s}%</div>
+        <div class="ring-lbl">match</div>
+        <div class="tip">
+          <div class="tip-title">Score detalhado</div>
+          <div class="tip-row"><span class="tip-key">🌐 Língua</span><strong>${lw}%</strong></div>
+          <div class="tip-bar"><div class="tip-fill" style="width:${lw}%;background:${lc}"></div></div>
+          <div class="tip-row" style="margin-top:6px"><span class="tip-key">⚙️ Técnico</span><strong>${tw}%</strong></div>
+          <div class="tip-bar"><div class="tip-fill" style="width:${tw}%;background:${tc}"></div></div>
+          <div class="tip-row" style="margin-top:6px"><span class="tip-key">🏠 Regime</span><strong>${rw}%</strong></div>
+          <div class="tip-bar"><div class="tip-fill" style="width:${rw}%;background:${rc}"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag ${regionCls(job.region)}">${regionLabel(job.region)}</span>
+      <span class="tag ${regimeCls(job.regime)}">${job.regime_label}</span>
+      <span class="tag ${langCls(job.language_required)}">${job.language_label}</span>
+      <span class="tag tag-days">🕐 ${days}</span>
+      ${job.is_new?'<span class="tag tag-new">🆕 Novo</span>':''}
+      <span class="tag tag-src" style="background:${sc.bg};border-color:${sc.border};color:${sc.color}">${sc.icon} ${job.source}</span>
+    </div>
+
+    <div class="card-note">${job.note}</div>
+
+    <div class="card-foot">
+      <span class="salary">${job.salary||'—'}</span>
+      <div class="card-actions">
+        <button class="btn-save ${isSaved?'saved':''}" onclick="toggleSave('${job.id}',this)">
+          ${isSaved?'⭐ Guardado':'☆ Guardar'}
+        </button>
+        <a class="btn-apply" href="${job.url}" target="_blank" onclick="markViewed('${job.id}')">
+          Ver vaga ↗
+        </a>
+      </div>
+    </div>`;
+  return el;
+}
+
+// ─────────────────────────────────────────────────
+// ACTIONS
+// ─────────────────────────────────────────────────
+function toggleSave(id, btn) {
+  if (savedIds.has(id)) {
+    savedIds.delete(id);
+    btn.textContent='☆ Guardar'; btn.classList.remove('saved');
+    document.getElementById(`c-${id}`)?.classList.remove('saved-card');
+  } else {
+    savedIds.add(id);
+    btn.textContent='⭐ Guardado'; btn.classList.add('saved');
+    document.getElementById(`c-${id}`)?.classList.add('saved-card');
+  }
+  localStorage.setItem('jrSaved', JSON.stringify([...savedIds]));
+  updateStats();
+}
+
+function markViewed(id) {
+  viewedIds.add(id);
+  localStorage.setItem('jrViewed', JSON.stringify([...viewedIds]));
+  document.getElementById(`c-${id}`)?.classList.add('viewed');
+}
+
+function updateStats() {
+  document.getElementById('s-total').textContent = allJobs.length;
+  document.getElementById('s-high').textContent  = allJobs.filter(j=>j.match_score>=80).length;
+  document.getElementById('s-mid').textContent   = allJobs.filter(j=>j.match_score>50&&j.match_score<80).length;
+  document.getElementById('s-low').textContent   = allJobs.filter(j=>j.match_score<=50).length;
+  document.getElementById('s-new').textContent   = allJobs.filter(j=>j.is_new).length;
+  document.getElementById('s-saved').textContent = savedIds.size;
+}
+
+// ─────────────────────────────────────────────────
+// INIT — depois de tudo definido
+// ─────────────────────────────────────────────────
+allJobs = JOBS_DATA.jobs;
+const _meta = JOBS_DATA.meta;
+const _d = new Date(_meta.last_updated);
+document.getElementById('hd-updated').textContent =
+  _d.toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'});
+document.getElementById('hd-sources').textContent = _meta.sources_searched.length;
+document.getElementById('ft-total').textContent   = allJobs.length;
+document.getElementById('ft-sources').textContent = _meta.sources_searched.length;
+buildSourceChips();
+updateStats();
+applyFilters();
+</script>
+</body>
+</html>
