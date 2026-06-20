@@ -167,9 +167,8 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 /* Footer */
 .page-foot{padding:20px 28px;text-align:center;font-size:.68rem;color:var(--muted);border-top:1px solid var(--border)}
 
-/* ── SOURCE ROW inside toolbar ── */
-.toolbar-sep-full{width:100%;height:1px;background:var(--border);margin:4px 0}
-.src-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center;width:100%}
+/* ── SOURCE PANEL (desktop: always visible; mobile: collapsible) ── */
+.src-panel{background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
 /* ── MOBILE FILTER TOGGLE (hidden on desktop) ── */
 .mob-filter-btn{display:none;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--muted2);cursor:pointer;font-size:.8rem;font-weight:600;white-space:nowrap;flex-shrink:0}
@@ -202,8 +201,9 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
   .toolbar{display:none;padding:10px 16px;position:static}
   .toolbar.mob-open{display:flex}
 
-  /* Source chips wrap no mobile */
-  #src-chips{flex-wrap:wrap!important}
+  /* Source panel — oculto no mobile, abre com botão Fontes */
+  .src-panel{display:none;padding:10px 16px}
+  .src-panel.mob-open{display:flex}
 
   /* Section headers & grid */
   .sec-hdr{padding:14px 16px 8px}
@@ -269,6 +269,7 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
     <input class="search-box" id="search-mob" type="text" placeholder="Pesquisar…" oninput="document.getElementById('search').value=this.value;applyFilters()">
   </div>
   <button class="mob-filter-btn" id="mob-filter-btn" onclick="toggleMobFilters()">⚙ Filtros</button>
+  <button class="mob-filter-btn" id="mob-src-btn" onclick="toggleMobSources()">🔗 Fontes</button>
   <select class="sort-sel" id="sort-mob" onchange="document.getElementById('sort-by').value=this.value;applyFilters()" style="max-width:130px">
     <option value="match_desc">↓ Match</option>
     <option value="match_asc">↑ Match</option>
@@ -333,13 +334,13 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
     <option value="company_asc">A–Z Empresa</option>
   </select>
 
-  <!-- SOURCE FILTER — dentro do toolbar para colapsar no mobile -->
-  <div class="toolbar-sep-full"></div>
-  <div class="src-row">
-    <span class="fgroup-label">Fontes</span>
-    <button class="fb on" id="src-all" onclick="setSourceAll(this)" style="font-size:.72rem">Todas</button>
-    <div id="src-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
-  </div>
+</div>
+
+<!-- SOURCE PANEL — painel separado, colapsa no mobile -->
+<div class="src-panel">
+  <span class="fgroup-label" style="margin-right:4px">Fontes</span>
+  <button class="fb on" id="src-all" onclick="setSourceAll(this)" style="font-size:.72rem">Todas as plataformas</button>
+  <div id="src-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
 </div>
 
 <div id="container"></div>
@@ -644,7 +645,15 @@ function toggleMobFilters() {
   const btn     = document.getElementById('mob-filter-btn');
   const open    = toolbar.classList.toggle('mob-open');
   btn.classList.toggle('open', open);
-  btn.textContent = open ? '✕ Fechar' : '⚙ Filtros';
+  btn.textContent = open ? '✕ Filtros' : '⚙ Filtros';
+}
+
+function toggleMobSources() {
+  const panel = document.querySelector('.src-panel');
+  const btn   = document.getElementById('mob-src-btn');
+  const open  = panel.classList.toggle('mob-open');
+  btn.classList.toggle('open', open);
+  btn.textContent = open ? '✕ Fontes' : '🔗 Fontes';
 }
 </script>
 </body>
