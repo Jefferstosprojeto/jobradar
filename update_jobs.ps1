@@ -88,4 +88,45 @@ try {
     exit 1
 }
 
+Write-Log "=== Job Radar — Claude concluído ==="
+
+# ── Git commit + push ──────────────────────────────────────
+Write-Log "A fazer git commit e push..."
+try {
+    $GitDir = $PSScriptRoot
+    git -C $GitDir add -A 2>&1 | ForEach-Object { Write-Log "git: $_" }
+    $CommitMsg = "Job Radar auto-update $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+    $commitOut = git -C $GitDir commit -m $CommitMsg 2>&1
+    $commitOut | ForEach-Object { Write-Log "git: $_" }
+    if ($LASTEXITCODE -eq 0) {
+        git -C $GitDir push 2>&1 | ForEach-Object { Write-Log "git: $_" }
+        Write-Log "Push para GitHub concluído."
+    } else {
+        Write-Log "Nada para commitar (sem alterações)."
+    }
+} catch {
+    Write-Log "AVISO git: $_"
+}
+
+# ── Redeploy Netlify via zip ───────────────────────────────
+Write-Log "A fazer redeploy no Netlify..."
+try {
+    $NetlifyToken = "nfp_R5gY2Wa8bcKtQTcKzMrWukrdDbFj9fCR61d1"
+    $SiteId       = "1223b23e-deca-4325-a328-440ab10ba805"
+    $ZipPath      = "$env:TEMP\jobradar-deploy.zip"
+
+    if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
+    Compress-Archive -Path "$PSScriptRoot\*" -DestinationPath $ZipPath -Force
+
+    $deployResult = curl.exe -s -X POST "https://api.netlify.com/api/v1/sites/$SiteId/deploys" `
+        -H "Authorization: Bearer $NetlifyToken" `
+        -H "Content-Type: application/zip" `
+        --data-binary "@$ZipPath"
+
+    $deployJson = $deployResult | ConvertFrom-Json
+    Write-Log "Netlify deploy state: $($deployJson.state) · id: $($deployJson.id)"
+} catch {
+    Write-Log "AVISO Netlify: $_"
+}
+
 Write-Log "=== Job Radar — Actualização concluída ==="

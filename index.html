@@ -167,12 +167,52 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 /* Footer */
 .page-foot{padding:20px 28px;text-align:center;font-size:.68rem;color:var(--muted);border-top:1px solid var(--border)}
 
+/* ── MOBILE FILTER TOGGLE (hidden on desktop) ── */
+.mob-filter-btn{display:none;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--muted2);cursor:pointer;font-size:.8rem;font-weight:600;white-space:nowrap;flex-shrink:0}
+.mob-filter-btn.open{border-color:var(--accent);color:var(--accent);background:#0c1a2e}
+.mob-filter-btn-wrap{display:none;background:var(--surface);border-bottom:1px solid var(--border);padding:10px 16px;gap:8px;align-items:center}
+
+/* ── RESPONSIVE ── */
 @media(max-width:640px){
-  .header,.stats-bar,.profile-bar,.toolbar{padding-left:16px;padding-right:16px}
-  .grid{padding-left:16px;padding-right:16px;grid-template-columns:1fr}
-  .sec-hdr{padding-left:16px;padding-right:16px}
-  .stats-bar{gap:0}
-  .stat{min-width:65px;padding:10px 14px}
+  /* Header */
+  .header{padding:12px 16px;gap:10px}
+  .logo-text h1{font-size:.88rem}
+  .logo-text p{display:none}
+  .header-right{display:none}
+  .logo-icon{width:34px;height:34px;font-size:1rem}
+
+  /* Stats bar */
+  .stats-bar{padding:0 16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .stat{scroll-snap-align:start;min-width:64px;padding:10px 12px;flex-shrink:0}
+  .stat-num{font-size:1.3rem}
+  .stat-lbl{font-size:.58rem}
+
+  /* Profile bar — hidden on mobile, toggle via button */
+  .profile-bar{display:none!important}
+
+  /* Mobile filter toggle row */
+  .mob-filter-btn-wrap{display:flex}
+  .mob-filter-btn{display:flex}
+
+  /* Toolbar — hidden by default on mobile, toggled */
+  .toolbar{display:none;padding:10px 16px;position:static}
+  .toolbar.mob-open{display:flex}
+
+  /* Source filter bar */
+  .src-bar{padding:8px 16px;overflow-x:auto;flex-wrap:nowrap!important;-webkit-overflow-scrolling:touch}
+
+  /* Section headers & grid */
+  .sec-hdr{padding:14px 16px 8px}
+  .grid{padding:0 12px 12px;grid-template-columns:1fr}
+
+  /* Cards */
+  .card{padding:14px}
+  .ring{width:46px;height:46px}
+  .ring-pct{font-size:.78rem}
+  .card-title{font-size:.86rem}
+
+  /* Tooltips — bottom on mobile */
+  .tip{top:auto;bottom:60px;right:0}
 }
 </style>
 </head>
@@ -216,6 +256,21 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
   <span class="chip chip-blue">SAC · Datasphere · BDC</span>
   <span class="chip chip-blue">BW/4HANA · HANA · ABAP</span>
   <span class="chip chip-blue">Databricks · Data Lake</span>
+</div>
+
+<!-- MOBILE FILTER TOGGLE ROW -->
+<div class="mob-filter-btn-wrap">
+  <div class="search-wrap" style="flex:1;min-width:0;max-width:none">
+    <span class="search-icon">🔍</span>
+    <input class="search-box" id="search-mob" type="text" placeholder="Pesquisar…" oninput="document.getElementById('search').value=this.value;applyFilters()">
+  </div>
+  <button class="mob-filter-btn" id="mob-filter-btn" onclick="toggleMobFilters()">⚙ Filtros</button>
+  <select class="sort-sel" id="sort-mob" onchange="document.getElementById('sort-by').value=this.value;applyFilters()" style="max-width:130px">
+    <option value="match_desc">↓ Match</option>
+    <option value="match_asc">↑ Match</option>
+    <option value="days_asc">🕐 Recentes</option>
+    <option value="company_asc">A–Z</option>
+  </select>
 </div>
 
 <!-- TOOLBAR -->
@@ -276,7 +331,7 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 </div>
 
 <!-- SOURCE FILTER -->
-<div style="background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+<div class="src-bar" style="background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
   <span style="font-size:.65rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-right:4px">Fontes</span>
   <button class="fb on" id="src-all" onclick="setSourceAll(this)" style="font-size:.72rem">Todas as plataformas</button>
   <div id="src-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
@@ -578,6 +633,14 @@ document.getElementById('ft-sources').textContent = _meta.sources_searched.lengt
 buildSourceChips();
 updateStats();
 applyFilters();
+
+function toggleMobFilters() {
+  const toolbar = document.querySelector('.toolbar');
+  const btn     = document.getElementById('mob-filter-btn');
+  const open    = toolbar.classList.toggle('mob-open');
+  btn.classList.toggle('open', open);
+  btn.textContent = open ? '✕ Fechar' : '⚙ Filtros';
+}
 </script>
 </body>
 </html>
