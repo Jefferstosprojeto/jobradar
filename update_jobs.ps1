@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # Job Radar — Actualização automática + alerta de email
 # Jefferson Santos · SAP Analytics & Data Architect
 # Corre 2x/dia via Windows Task Scheduler
@@ -6,6 +6,8 @@
 
 $LogDir  = "$PSScriptRoot\logs"
 $LogFile = "$LogDir\$(Get-Date -Format 'yyyy-MM-dd').log"
+
+if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir | Out-Null }
 
 function Write-Log {
     param([string]$Msg)
@@ -111,7 +113,8 @@ try {
 # ── Redeploy Netlify via zip ───────────────────────────────
 Write-Log "A fazer redeploy no Netlify..."
 try {
-    $NetlifyToken = "nfp_R5gY2Wa8bcKtQTcKzMrWukrdDbFj9fCR61d1"
+    $NetlifyToken = $env:NETLIFY_TOKEN
+    if (-not $NetlifyToken) { Write-Log "AVISO: NETLIFY_TOKEN não definido — deploy saltado."; return }
     $SiteId       = "1223b23e-deca-4325-a328-440ab10ba805"
     $ZipPath      = "$env:TEMP\jobradar-deploy.zip"
 
