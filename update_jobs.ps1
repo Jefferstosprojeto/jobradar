@@ -61,8 +61,11 @@ c) Enviar email para jefferstos@gmail.com usando o Gmail MCP (ferramenta Gmail d
    - Assunto: "🎯 Job Radar — [N] novas vagas SAP · [data de hoje]"
    - Corpo: lista formatada com título, empresa, país, match%, regime, língua exigida e link directo para cada vaga nova; mencionar total de vagas no dashboard.
 
-PASSO 5 — Se NÃO houver vagas novas:
-Não enviar email. Apenas terminar silenciosamente.
+PASSO 5 — Sempre (com ou sem vagas novas):
+Actualizar o campo "last_updated" no meta do jobs.json e no JOBS_DATA do index.html com a data/hora actual em formato ISO 8601 (ex: "2026-06-22T15:15:00Z"). Mesmo que não haja vagas novas, este campo deve reflectir a última vez que a pesquisa foi executada.
+
+PASSO 6 — Se NÃO houver vagas novas:
+Não enviar email. Terminar após actualizar o last_updated.
 
 REGRAS IMPORTANTES:
 - Nunca remover vagas existentes do jobs.json
