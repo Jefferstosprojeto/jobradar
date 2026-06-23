@@ -41,8 +41,34 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 .meta-chip .val{font-size:1rem;font-weight:700;color:var(--accent)}
 .meta-chip .lbl{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:1px}
 
+/* ── LAYOUT ── */
+.layout-wrap{display:flex;align-items:flex-start}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;min-width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+.sidebar-section{display:flex;flex-direction:column;gap:4px}
+.sidebar-label{font-size:.59rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;padding:0 3px;margin-bottom:2px}
+.sidebar-sep{height:1px;background:var(--border);flex-shrink:0}
+.fb-side{width:100%;text-align:left;padding:6px 10px;border-radius:6px;border:1px solid transparent;background:transparent;color:var(--muted2);cursor:pointer;font-size:.77rem;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fb-side:hover{border-color:var(--border2);color:var(--text);background:var(--surface2)}
+.fb-side.on  {background:#1e3a5f;border-color:var(--accent);color:var(--accent);font-weight:600}
+.fb-side.on-g{background:#052e16;border-color:var(--green2);color:var(--green);font-weight:600}
+.fb-side.on-y{background:#1c1400;border-color:var(--yellow2);color:var(--yellow);font-weight:600}
+.fb-side.on-r{background:#1f0606;border-color:var(--red2);color:var(--red);font-weight:600}
+.sort-sel-side{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:6px 10px;color:var(--text);font-size:.77rem;cursor:pointer;outline:none}
+.src-chips-side{display:flex;flex-direction:column;gap:4px}
+.src-chip-side{width:100%;text-align:left;padding:5px 9px;border-radius:6px;border:1px solid;font-size:.71rem;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.65}
+.src-chip-side:hover{opacity:.9}
+.src-chip-side.on{opacity:1;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.src-chip-side.off{opacity:.2;text-decoration:line-through}
+
+/* ── MAIN CONTENT ── */
+.main-content{flex:1;min-width:0;overflow-x:hidden}
+
 /* ── STATS BAR ── */
-.stats-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:stretch;overflow-x:auto}
+.stats-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:stretch;overflow-x:auto}
 .stat{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;gap:3px;min-width:80px;border-right:1px solid var(--border);position:relative;cursor:default;transition:background .15s}
 .stat:hover{background:var(--surface2)}
 .stat:last-child{border-right:none}
@@ -56,7 +82,7 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 .stat-saved .stat-num{color:var(--orange)}
 
 /* ── LANG / PROFILE BAR ── */
-.profile-bar{background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.profile-bar{background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .pbar-sep{width:1px;height:20px;background:var(--border2);margin:0 6px}
 .chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.71rem;font-weight:500;border:1px solid}
 .chip-green {background:#052e16;border-color:#166534;color:var(--green)}
@@ -65,31 +91,13 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 .chip-blue  {background:#0c1a2e;border-color:#1e40af;color:var(--accent)}
 .chip-muted {background:var(--surface);border-color:var(--border);color:var(--muted2)}
 
-/* ── TOOLBAR ── */
-.toolbar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:20;backdrop-filter:blur(8px)}
-.search-wrap{position:relative;flex:1;min-width:160px;max-width:260px}
-.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem;pointer-events:none}
-.search-box{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:7px 10px 7px 30px;color:var(--text);font-size:.8rem;outline:none;transition:border-color .15s}
-.search-box:focus{border-color:var(--accent)}
-.search-box::placeholder{color:var(--muted)}
-.tsep{width:1px;height:28px;background:var(--border2)}
-.fgroup{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
-.fgroup-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-right:2px;white-space:nowrap}
-.fb{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;font-size:.75rem;transition:all .15s;white-space:nowrap}
-.fb:hover{border-color:var(--border2);color:var(--text);background:var(--surface2)}
-.fb.on     {background:#1e3a5f;border-color:var(--accent);color:var(--accent);font-weight:600}
-.fb.on-g   {background:#052e16;border-color:var(--green2);color:var(--green);font-weight:600}
-.fb.on-y   {background:#1c1400;border-color:var(--yellow2);color:var(--yellow);font-weight:600}
-.fb.on-r   {background:#1f0606;border-color:var(--red2);color:var(--red);font-weight:600}
-.sort-sel{background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:5px 10px;color:var(--text);font-size:.75rem;cursor:pointer;outline:none}
-
 /* ── SECTION HEADER ── */
-.sec-hdr{padding:20px 28px 10px;display:flex;align-items:center;gap:10px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.sec-hdr{padding:20px 24px 10px;display:flex;align-items:center;gap:10px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 .sec-hdr::after{content:'';flex:1;height:1px;background:var(--border)}
 .sec-count{background:var(--surface2);border:1px solid var(--border);padding:1px 8px;border-radius:10px}
 
 /* ── GRID ── */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px;padding:0 28px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;padding:0 24px 14px}
 
 /* ── CARD ── */
 .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:13px;transition:all .2s;position:relative;overflow:hidden}
@@ -127,24 +135,26 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 /* Tags */
 .tags{display:flex;flex-wrap:wrap;gap:5px}
 .tag{padding:2px 9px;border-radius:10px;font-size:.68rem;font-weight:500;border:1px solid;white-space:nowrap}
-.tag-dach  {background:#0c1a2e;border-color:#1e3a5f;color:#7dd3fc}
-.tag-eu    {background:#0c2020;border-color:#134e4a;color:var(--teal)}
-.tag-br    {background:#052e16;border-color:#166534;color:var(--green)}
-.tag-remote{background:#052e16;border-color:#166534;color:var(--green)}
-.tag-hybrid{background:#1c1400;border-color:#92400e;color:var(--yellow)}
-.tag-onsite{background:#1f0606;border-color:#991b1b;color:var(--red)}
-.tag-lok   {background:#052e16;border-color:#166534;color:var(--green)}
-.tag-lwarn {background:#1c1400;border-color:#92400e;color:var(--yellow)}
-.tag-lbad  {background:#1f0606;border-color:#991b1b;color:var(--red)}
-.tag-new   {background:#1a0a2e;border-color:#6d28d9;color:var(--purple);animation:blink 2s ease-in-out infinite}
-.tag-days  {background:var(--surface2);border-color:var(--border2);color:var(--muted2)}
-.tag-src   {border:1px solid;font-weight:600}
+.tag-dach   {background:#0c1a2e;border-color:#1e3a5f;color:#7dd3fc}
+.tag-eu     {background:#0c2020;border-color:#134e4a;color:var(--teal)}
+.tag-br     {background:#052e16;border-color:#166534;color:var(--green)}
+.tag-usa    {background:#0f0c2e;border-color:#3730a3;color:#a5b4fc}
+.tag-ww     {background:#1a0c2e;border-color:#6d28d9;color:#c4b5fd}
+.tag-remote {background:#052e16;border-color:#166534;color:var(--green)}
+.tag-hybrid {background:#1c1400;border-color:#92400e;color:var(--yellow)}
+.tag-onsite {background:#1f0606;border-color:#991b1b;color:var(--red)}
+.tag-lok    {background:#052e16;border-color:#166534;color:var(--green)}
+.tag-lwarn  {background:#1c1400;border-color:#92400e;color:var(--yellow)}
+.tag-lbad   {background:#1f0606;border-color:#991b1b;color:var(--red)}
+.tag-new    {background:#1a0a2e;border-color:#6d28d9;color:var(--purple);animation:blink 2s ease-in-out infinite}
+.tag-days   {background:var(--surface2);border-color:var(--border2);color:var(--muted2)}
+.tag-src    {border:1px solid;font-weight:600}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
 
 /* Note */
 .card-note{font-size:.75rem;color:var(--muted2);line-height:1.55;padding:8px 10px;background:rgba(255,255,255,.02);border-radius:6px;border-left:2px solid var(--border2)}
 
-/* Footer */
+/* Card footer */
 .card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .salary{font-size:.75rem;font-weight:700;color:var(--green)}
 .card-actions{display:flex;gap:6px}
@@ -154,68 +164,41 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 .btn-apply{padding:6px 16px;border-radius:6px;border:none;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;cursor:pointer;font-size:.75rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:opacity .15s}
 .btn-apply:hover{opacity:.85}
 
-/* Source filter chips */
-.src-chip{padding:4px 11px;border-radius:6px;border:1px solid;font-size:.71rem;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;opacity:.55}
-.src-chip:hover{opacity:.85}
-.src-chip.on{opacity:1;box-shadow:0 0 0 2px rgba(255,255,255,.15)}
-.src-chip.off{opacity:.3;text-decoration:line-through}
-
 /* Empty */
 .empty{text-align:center;padding:80px 24px;color:var(--muted);display:none}
 .empty-icon{font-size:3rem;margin-bottom:14px}
 
-/* Footer */
+/* Page footer */
 .page-foot{padding:20px 28px;text-align:center;font-size:.68rem;color:var(--muted);border-top:1px solid var(--border)}
 
-/* ── SOURCE PANEL (desktop: always visible; mobile: collapsible) ── */
-.src-panel{background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-
-/* ── MOBILE FILTER TOGGLE (hidden on desktop) ── */
-.mob-filter-btn{display:none;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--muted2);cursor:pointer;font-size:.8rem;font-weight:600;white-space:nowrap;flex-shrink:0}
-.mob-filter-btn.open{border-color:var(--accent);color:var(--accent);background:#0c1a2e}
-.mob-filter-btn-wrap{display:none;background:var(--surface);border-bottom:1px solid var(--border);padding:10px 16px;gap:8px;align-items:center}
+/* ── MOBILE SIDEBAR TOGGLE ── */
+.mob-sidebar-btn{display:none;align-items:center;gap:8px;padding:10px 16px;border-radius:0;border:none;border-bottom:1px solid var(--border);background:var(--surface2);color:var(--muted2);cursor:pointer;font-size:.82rem;font-weight:600;width:100%;text-align:left}
+.mob-sidebar-btn.open{color:var(--accent);background:#0c1a2e}
 
 /* ── RESPONSIVE ── */
-@media(max-width:640px){
-  /* Header */
+@media(max-width:768px){
   .header{padding:12px 16px;gap:10px}
-  .logo-text h1{font-size:.88rem}
   .logo-text p{display:none}
   .header-right{display:none}
-  .logo-icon{width:34px;height:34px;font-size:1rem}
 
-  /* Stats bar */
+  .layout-wrap{flex-direction:column}
+  .sidebar{display:none;width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid var(--border);max-height:80vh}
+  .sidebar.mob-open{display:flex}
+  .mob-sidebar-btn{display:flex}
+
   .stats-bar{padding:0 16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
   .stat{scroll-snap-align:start;min-width:64px;padding:10px 12px;flex-shrink:0}
   .stat-num{font-size:1.3rem}
   .stat-lbl{font-size:.58rem}
 
-  /* Profile bar — hidden on mobile, toggle via button */
   .profile-bar{display:none!important}
 
-  /* Mobile filter toggle row */
-  .mob-filter-btn-wrap{display:flex}
-  .mob-filter-btn{display:flex}
-
-  /* Toolbar — hidden by default on mobile, toggled */
-  .toolbar{display:none;padding:10px 16px;position:static}
-  .toolbar.mob-open{display:flex}
-
-  /* Source panel — oculto no mobile, abre com botão Fontes */
-  .src-panel{display:none;padding:10px 16px}
-  .src-panel.mob-open{display:flex}
-
-  /* Section headers & grid */
   .sec-hdr{padding:14px 16px 8px}
   .grid{padding:0 12px 12px;grid-template-columns:1fr}
-
-  /* Cards */
   .card{padding:14px}
   .ring{width:46px;height:46px}
   .ring-pct{font-size:.78rem}
   .card-title{font-size:.86rem}
-
-  /* Tooltips — bottom on mobile */
   .tip{top:auto;bottom:60px;right:0}
 }
 </style>
@@ -228,7 +211,7 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
     <div class="logo-icon">🎯</div>
     <div class="logo-text">
       <h1>Job Radar — SAP Cloud · Datasphere · SAC · BDC</h1>
-      <p>Jefferson Santos · SAP Analytics & Data Architect · 20 anos · Montijo, Portugal · 🇪🇺 EU Passport</p>
+      <p>Jefferson Santos · SAP Analytics &amp; Data Architect · 20 anos · Montijo, Portugal · 🇪🇺 EU Passport</p>
     </div>
   </div>
   <div class="header-right">
@@ -237,6 +220,105 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
     <div class="meta-chip"><div class="val" style="color:var(--green)">🔄</div><div class="lbl">Diário auto</div></div>
   </div>
 </div>
+
+<!-- MOBILE SIDEBAR TOGGLE -->
+<button class="mob-sidebar-btn" id="mob-sidebar-btn" onclick="toggleMobSidebar()">⚙ Filtros &amp; Fontes</button>
+
+<!-- MAIN LAYOUT -->
+<div class="layout-wrap">
+
+<!-- ── SIDEBAR (LEFT) ── -->
+<aside class="sidebar" id="sidebar">
+
+  <!-- Search -->
+  <div class="sidebar-section">
+    <div class="search-wrap" style="max-width:none">
+      <span class="search-icon">🔍</span>
+      <input class="search-box" id="search" type="text" placeholder="Pesquisar empresa, título…" oninput="applyFilters()" style="width:100%">
+    </div>
+  </div>
+
+  <div class="sidebar-sep"></div>
+
+  <!-- Match Score -->
+  <div class="sidebar-section">
+    <div class="sidebar-label">Match Score</div>
+    <button class="fb-side on"  data-f="match" data-v="all"  onclick="setF('match','all',this)">🌍 Todos</button>
+    <button class="fb-side"     data-f="match" data-v="high" onclick="setF('match','high',this)">✅ ≥80% — Alta</button>
+    <button class="fb-side"     data-f="match" data-v="mid"  onclick="setF('match','mid',this)">⚠️ 51–79% — Média</button>
+    <button class="fb-side"     data-f="match" data-v="low"  onclick="setF('match','low',this)">❌ ≤50% — Baixa</button>
+  </div>
+
+  <div class="sidebar-sep"></div>
+
+  <!-- Região -->
+  <div class="sidebar-section">
+    <div class="sidebar-label">Região</div>
+    <button class="fb-side on"  data-f="region" data-v="all"       onclick="setF('region','all',this)">🌍 Todas</button>
+    <button class="fb-side"     data-f="region" data-v="dach"      onclick="setF('region','dach',this)">🇩🇪 DACH</button>
+    <button class="fb-side"     data-f="region" data-v="eu"        onclick="setF('region','eu',this)">🇪🇺 União Europeia</button>
+    <button class="fb-side"     data-f="region" data-v="brazil"    onclick="setF('region','brazil',this)">🇧🇷 Brasil</button>
+    <button class="fb-side"     data-f="region" data-v="usa"       onclick="setF('region','usa',this)">🇺🇸 USA</button>
+    <button class="fb-side"     data-f="region" data-v="worldwide" onclick="setF('region','worldwide',this)">🌐 Worldwide</button>
+  </div>
+
+  <div class="sidebar-sep"></div>
+
+  <!-- Regime -->
+  <div class="sidebar-section">
+    <div class="sidebar-label">Regime</div>
+    <button class="fb-side on"  data-f="regime" data-v="all"    onclick="setF('regime','all',this)">Todos</button>
+    <button class="fb-side"     data-f="regime" data-v="remote"  onclick="setF('regime','remote',this)">🌐 Remoto</button>
+    <button class="fb-side"     data-f="regime" data-v="hybrid"  onclick="setF('regime','hybrid',this)">🔀 Híbrido</button>
+    <button class="fb-side"     data-f="regime" data-v="onsite"  onclick="setF('regime','onsite',this)">🏢 Onsite</button>
+  </div>
+
+  <div class="sidebar-sep"></div>
+
+  <!-- Publicação -->
+  <div class="sidebar-section">
+    <div class="sidebar-label">Publicação</div>
+    <button class="fb-side"     data-f="age" data-v="30"  onclick="setF('age','30',this)">≤ 30 dias</button>
+    <button class="fb-side on"  data-f="age" data-v="60"  onclick="setF('age','60',this)">≤ 2 meses</button>
+    <button class="fb-side"     data-f="age" data-v="all" onclick="setF('age','all',this)">Todas</button>
+  </div>
+
+  <div class="sidebar-sep"></div>
+
+  <!-- Especial -->
+  <div class="sidebar-section">
+    <div class="sidebar-label">Especial</div>
+    <button class="fb-side" data-f="special" data-v="new"   onclick="setF('special','new',this)">🆕 Novos</button>
+    <button class="fb-side" data-f="special" data-v="saved" onclick="setF('special','saved',this)">⭐ Guardados</button>
+  </div>
+
+  <div class="sidebar-sep"></div>
+
+  <!-- Ordenação -->
+  <div class="sidebar-section">
+    <div class="sidebar-label">Ordenar por</div>
+    <select class="sort-sel-side" id="sort-by" onchange="applyFilters()">
+      <option value="match_desc">↓ Match %</option>
+      <option value="match_asc">↑ Match %</option>
+      <option value="days_asc">🕐 Mais recentes</option>
+      <option value="company_asc">A–Z Empresa</option>
+    </select>
+  </div>
+
+  <div class="sidebar-sep"></div>
+
+  <!-- Plataformas / Fontes -->
+  <div class="sidebar-section">
+    <div class="sidebar-label">Plataformas</div>
+    <button class="fb-side on" id="src-all" onclick="setSourceAll(this)">Todas as plataformas</button>
+    <div id="src-chips" class="src-chips-side" style="margin-top:4px"></div>
+  </div>
+
+</aside>
+<!-- ── END SIDEBAR ── -->
+
+<!-- ── MAIN CONTENT ── -->
+<div class="main-content">
 
 <!-- STATS BAR -->
 <div class="stats-bar">
@@ -262,89 +344,12 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
   <span class="chip chip-blue">Databricks · Data Lake</span>
 </div>
 
-<!-- MOBILE FILTER TOGGLE ROW -->
-<div class="mob-filter-btn-wrap">
-  <div class="search-wrap" style="flex:1;min-width:0;max-width:none">
-    <span class="search-icon">🔍</span>
-    <input class="search-box" id="search-mob" type="text" placeholder="Pesquisar…" oninput="document.getElementById('search').value=this.value;applyFilters()">
-  </div>
-  <button class="mob-filter-btn" id="mob-filter-btn" onclick="toggleMobFilters()">⚙ Filtros</button>
-  <button class="mob-filter-btn" id="mob-src-btn" onclick="toggleMobSources()">🔗 Fontes</button>
-  <select class="sort-sel" id="sort-mob" onchange="document.getElementById('sort-by').value=this.value;applyFilters()" style="max-width:130px">
-    <option value="match_desc">↓ Match</option>
-    <option value="match_asc">↑ Match</option>
-    <option value="days_asc">🕐 Recentes</option>
-    <option value="company_asc">A–Z</option>
-  </select>
-</div>
-
-<!-- TOOLBAR -->
-<div class="toolbar">
-  <div class="search-wrap">
-    <span class="search-icon">🔍</span>
-    <input class="search-box" id="search" type="text" placeholder="Pesquisar empresa, título…" oninput="applyFilters()">
-  </div>
-  <div class="tsep"></div>
-
-  <div class="fgroup">
-    <span class="fgroup-label">Match</span>
-    <button class="fb on"  data-f="match" data-v="all"  onclick="setF('match','all',this)">Todos</button>
-    <button class="fb"     data-f="match" data-v="high" onclick="setF('match','high',this)">✅ ≥80%</button>
-    <button class="fb"     data-f="match" data-v="mid"  onclick="setF('match','mid',this)">⚠️ 51–79%</button>
-    <button class="fb"     data-f="match" data-v="low"  onclick="setF('match','low',this)">❌ ≤50%</button>
-  </div>
-  <div class="tsep"></div>
-
-  <div class="fgroup">
-    <span class="fgroup-label">Região</span>
-    <button class="fb on"  data-f="region" data-v="all"    onclick="setF('region','all',this)">🌍 Todas</button>
-    <button class="fb"     data-f="region" data-v="dach"   onclick="setF('region','dach',this)">🇩🇪 DACH</button>
-    <button class="fb"     data-f="region" data-v="eu"     onclick="setF('region','eu',this)">🇪🇺 EU</button>
-    <button class="fb"     data-f="region" data-v="brazil" onclick="setF('region','brazil',this)">🇧🇷 Brasil</button>
-  </div>
-  <div class="tsep"></div>
-
-  <div class="fgroup">
-    <span class="fgroup-label">Regime</span>
-    <button class="fb on"  data-f="regime" data-v="all"    onclick="setF('regime','all',this)">Todos</button>
-    <button class="fb"     data-f="regime" data-v="remote"  onclick="setF('regime','remote',this)">🌐 Remoto</button>
-    <button class="fb"     data-f="regime" data-v="hybrid"  onclick="setF('regime','hybrid',this)">🔀 Híbrido</button>
-    <button class="fb"     data-f="regime" data-v="onsite"  onclick="setF('regime','onsite',this)">🏢 Onsite</button>
-  </div>
-  <div class="tsep"></div>
-
-  <div class="fgroup">
-    <span class="fgroup-label">Publicação</span>
-    <button class="fb"     data-f="age" data-v="30"  onclick="setF('age','30',this)">≤ 30 dias</button>
-    <button class="fb on"  data-f="age" data-v="60"  onclick="setF('age','60',this)">≤ 2 meses</button>
-    <button class="fb"     data-f="age" data-v="all" onclick="setF('age','all',this)">Todas</button>
-  </div>
-  <div class="tsep"></div>
-
-  <div class="fgroup">
-    <button class="fb" data-f="special" data-v="new"   onclick="setF('special','new',this)">🆕 Novos</button>
-    <button class="fb" data-f="special" data-v="saved" onclick="setF('special','saved',this)">⭐ Guardados</button>
-  </div>
-  <div class="tsep"></div>
-
-  <select class="sort-sel" id="sort-by" onchange="applyFilters()">
-    <option value="match_desc">↓ Match %</option>
-    <option value="match_asc">↑ Match %</option>
-    <option value="days_asc">🕐 Mais recentes</option>
-    <option value="company_asc">A–Z Empresa</option>
-  </select>
-
-</div>
-
-<!-- SOURCE PANEL — painel separado, colapsa no mobile -->
-<div class="src-panel">
-  <span class="fgroup-label" style="margin-right:4px">Fontes</span>
-  <button class="fb on" id="src-all" onclick="setSourceAll(this)" style="font-size:.72rem">Todas as plataformas</button>
-  <div id="src-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
-</div>
-
 <div id="container"></div>
 <div class="empty" id="empty"><div class="empty-icon">🔍</div><div>Nenhuma vaga para estes filtros.</div></div>
+
+</div><!-- end main-content -->
+</div><!-- end layout-wrap -->
+
 <div class="page-foot">Job Radar · Jefferson Santos · Dados actualizados diariamente · <span id="ft-total">0</span> vagas · <span id="ft-sources">0</span> fontes</div>
 
 <script>
@@ -367,6 +372,23 @@ const SRC = {
   'CareersPage':      {bg:'#1a0a2e',border:'#9333ea',color:'#d8b4fe',icon:'📋'},
   'RetailSolutions':  {bg:'#0c1a2e',border:'#0369a1',color:'#7dd3fc',icon:'🛍️'},
   'Jobijoba':         {bg:'#1f0612',border:'#e11d48',color:'#fda4af',icon:'🇧🇷'},
+  'Jobgether':        {bg:'#0a1628',border:'#2563eb',color:'#93c5fd',icon:'🤝'},
+  'Remotive':         {bg:'#0c2020',border:'#0f766e',color:'#5eead4',icon:'📡'},
+  'XING':             {bg:'#052e16',border:'#15803d',color:'#86efac',icon:'💼'},
+  'MelhoresEmpregos': {bg:'#1c0e00',border:'#b45309',color:'#fcd34d',icon:'🇧🇷'},
+  'NDCGroup':         {bg:'#0c1a2e',border:'#1e40af',color:'#bfdbfe',icon:'🔵'},
+  'WelcomeToTheJungle':{bg:'#052e16',border:'#16a34a',color:'#86efac',icon:'🌴'},
+  'LinkedIn':         {bg:'#0c1a2e',border:'#0369a1',color:'#7dd3fc',icon:'💼'},
+  'Indeed':           {bg:'#1a1000',border:'#92400e',color:'#fbbf24',icon:'🔎'},
+  'Dice':             {bg:'#1a0a2e',border:'#7c3aed',color:'#c084fc',icon:'🎲'},
+  'ZipRecruiter':     {bg:'#052e16',border:'#166534',color:'#4ade80',icon:'⚡'},
+  'Glassdoor':        {bg:'#0c1e10',border:'#166534',color:'#86efac',icon:'🚪'},
+  'Wellfound':        {bg:'#1c0800',border:'#c2410c',color:'#fb923c',icon:'🚀'},
+  'BuiltIn':          {bg:'#0c1a2e',border:'#1e40af',color:'#93c5fd',icon:'🏗️'},
+  'Himalayas':        {bg:'#0f1020',border:'#4338ca',color:'#a5b4fc',icon:'🏔️'},
+  'SAPCareers':       {bg:'#1a0a00',border:'#b45309',color:'#fbbf24',icon:'🔷'},
+  'Catho':            {bg:'#1c0e00',border:'#b45309',color:'#fcd34d',icon:'🇧🇷'},
+  'Vagas.com.br':     {bg:'#052e16',border:'#166534',color:'#4ade80',icon:'🇧🇷'},
   'Quickin':          {bg:'#052e16',border:'#15803d',color:'#86efac',icon:'⚡'},
 };
 function srcStyle(src){return SRC[src]||{bg:'#1a1a2e',border:'#334155',color:'#94a3b8',icon:'🔗'}}
@@ -380,7 +402,7 @@ const JOBS_DATA = {"meta":{"last_updated":"2026-06-23T11:00:00Z","version":"1.0"
 // STATE
 // ─────────────────────────────────────────────────
 const state = { match:'all', region:'all', regime:'all', special:null, age:'60' };
-let activeSources = new Set(); // empty = all
+let activeSources = new Set();
 let allJobs = [];
 let savedIds  = new Set(JSON.parse(localStorage.getItem('jrSaved')  || '[]'));
 let viewedIds = new Set(JSON.parse(localStorage.getItem('jrViewed') || '[]'));
@@ -401,16 +423,18 @@ function ringCls(s)   { return s>=80?'ring-g':s>50?'ring-y':'ring-r' }
 function cardCls(s)   { return s>=80?'card-high':s>50?'card-mid':'card-low' }
 function regimeCls(r) { return r==='remote'?'tag-remote':r==='hybrid'?'tag-hybrid':'tag-onsite' }
 function langCls(l)   { return l==='english'||l==='portuguese'?'tag-lok':l==='german_possible'?'tag-lwarn':'tag-lbad' }
-function regionCls(r) { return r==='dach'?'tag-dach':r==='eu'?'tag-eu':'tag-br' }
-function regionLabel(r){ return r==='dach'?'🇩🇪 DACH':r==='eu'?'🇪🇺 EU':'🇧🇷 Brasil' }
+function regionCls(r) { return r==='dach'?'tag-dach':r==='eu'?'tag-eu':r==='usa'?'tag-usa':r==='worldwide'?'tag-ww':'tag-br' }
+function regionLabel(r){ return r==='dach'?'🇩🇪 DACH':r==='eu'?'🇪🇺 EU':r==='usa'?'🇺🇸 USA':r==='worldwide'?'🌐 Worldwide':'🇧🇷 Brasil' }
 
 // ─────────────────────────────────────────────────
 // SOURCE FILTER
 // ─────────────────────────────────────────────────
 const SECTIONS = [
-  {key:'dach',  label:'🇩🇪  DACH — Alemanha · Áustria · Suíça'},
-  {key:'eu',    label:'🇪🇺  União Europeia · Freelance / Contrato'},
-  {key:'brazil',label:'🇧🇷  Brasil'},
+  {key:'dach',      label:'🇩🇪  DACH — Alemanha · Áustria · Suíça'},
+  {key:'eu',        label:'🇪🇺  União Europeia · Freelance / Contrato'},
+  {key:'brazil',    label:'🇧🇷  Brasil'},
+  {key:'usa',       label:'🇺🇸  USA — United States'},
+  {key:'worldwide', label:'🌐  Worldwide Remote'},
 ];
 
 function buildSourceChips() {
@@ -420,7 +444,7 @@ function buildSourceChips() {
   sources.forEach(src => {
     const s = srcStyle(src);
     const btn = document.createElement('button');
-    btn.className = 'src-chip on';
+    btn.className = 'src-chip-side on';
     btn.dataset.src = src;
     btn.style.cssText = `background:${s.bg};border-color:${s.border};color:${s.color}`;
     btn.innerHTML = `${s.icon} ${src}`;
@@ -444,7 +468,7 @@ function toggleSource(src, btn) {
 
 function setSourceAll(btn) {
   activeSources.clear();
-  document.querySelectorAll('.src-chip').forEach(c=>{ c.classList.add('on'); c.classList.remove('off'); });
+  document.querySelectorAll('.src-chip-side').forEach(c=>{ c.classList.add('on'); c.classList.remove('off'); });
   btn.classList.add('on');
   applyFilters();
 }
@@ -471,11 +495,10 @@ function setF(type, val, btn) {
 function applyFilters() {
   const q    = document.getElementById('search').value.toLowerCase().trim();
   const sort = document.getElementById('sort-by').value;
-
-  const VALID_REGIONS = new Set(['dach','eu','brazil']);
+  const VALID_REGIONS = new Set(['dach','eu','brazil','usa','worldwide']);
 
   let list = allJobs.filter(j => {
-    if (!VALID_REGIONS.has(j.region)) return false; // bloqueia qualquer região fora do scope
+    if (!VALID_REGIONS.has(j.region)) return false;
     if (state.match  !=='all' && matchRange(j.match_score) !== state.match) return false;
     if (state.region !=='all' && j.region !== state.region) return false;
     if (state.regime !=='all' && j.regime !== state.regime) return false;
@@ -541,7 +564,6 @@ function card(job) {
   el.className = `card ${cardCls(s)}${isViewed?' viewed':''}${isSaved?' saved-card':''}`;
   el.id = `c-${job.id}`;
 
-  // tip fill widths
   const lw = bd.language||0, tw = bd.technical||0, rw = bd.regime||0;
   const lc = lw>=80?'#4ade80':lw>=50?'#fbbf24':'#f87171';
   const tc = tw>=80?'#4ade80':tw>=50?'#fbbf24':'#f87171';
@@ -626,7 +648,7 @@ function updateStats() {
 }
 
 // ─────────────────────────────────────────────────
-// INIT — depois de tudo definido
+// INIT
 // ─────────────────────────────────────────────────
 allJobs = JOBS_DATA.jobs;
 const _meta = JOBS_DATA.meta;
@@ -640,20 +662,12 @@ buildSourceChips();
 updateStats();
 applyFilters();
 
-function toggleMobFilters() {
-  const toolbar = document.querySelector('.toolbar');
-  const btn     = document.getElementById('mob-filter-btn');
-  const open    = toolbar.classList.toggle('mob-open');
+function toggleMobSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const btn     = document.getElementById('mob-sidebar-btn');
+  const open    = sidebar.classList.toggle('mob-open');
   btn.classList.toggle('open', open);
-  btn.textContent = open ? '✕ Filtros' : '⚙ Filtros';
-}
-
-function toggleMobSources() {
-  const panel = document.querySelector('.src-panel');
-  const btn   = document.getElementById('mob-src-btn');
-  const open  = panel.classList.toggle('mob-open');
-  btn.classList.toggle('open', open);
-  btn.textContent = open ? '✕ Fontes' : '🔗 Fontes';
+  btn.textContent = open ? '✕ Fechar filtros' : '⚙ Filtros & Fontes';
 }
 </script>
 </body>

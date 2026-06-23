@@ -25,7 +25,7 @@ Actualização automática do Job Radar — Jefferson Santos.
 PERFIL:
 - Nome: Jefferson Santos · Email: jefferstos@gmail.com
 - Stack: SAP BW, SAP BW/4HANA, SAP Datasphere, SAP Analytics Cloud (SAC), SAP BDC, SAP HANA, ABAP, Databricks, Data Lake, CDS Views
-- Regiões alvo: DACH (Alemanha/Áustria/Suíça), União Europeia, Brasil
+- Regiões alvo: DACH (Alemanha/Áustria/Suíça), União Europeia, Brasil, USA, Worldwide Remote
 - Regime preferido: Remoto; aceita híbrido com viagem 1x/mês
 - Línguas: Português 100%, Inglês 95%, Espanhol 70%, Alemão 0%
 - Localização: Montijo, Portugal · EU Passport
@@ -34,24 +34,39 @@ PASSO 1 — Ler vagas existentes:
 Ler o ficheiro "C:\Users\jssantos\Documents\CLAUDE CODE\Primeiro Projeto\JobRadar\data\jobs.json" e guardar todos os IDs existentes no campo "id" de cada job. Não adicionar duplicados.
 
 PASSO 2 — Pesquisar novas vagas (usar WebSearch para CADA um destes termos):
+EUROPA / DACH:
 - "SAP BW consultant remote Europe 2026"
-- "SAP BW4HANA consultant remote 2026"
+- "SAP BW4HANA consultant remote Europe 2026"
 - "SAP Datasphere consultant remote Europe 2026"
-- "SAP Analytics Cloud SAC consultant remote 2026"
+- "SAP Analytics Cloud SAC consultant remote Europe 2026"
 - "SAP BDC Business Data Cloud consultant remote 2026"
+- "SAP Datasphere Berater remote 2026" (alemão)
+- "SAP BW Berater remote DACH 2026" (alemão)
+BRASIL:
 - "consultor SAP BW remoto Brasil 2026"
 - "consultor SAP BW4HANA remoto Brasil 2026"
 - "consultor SAP Datasphere remoto Brasil 2026"
-Sites a pesquisar: LinkedIn, RemoteRocketship, Remotive, StepStone, FreelancerMap, Duerenhoff, Ratbacher, Gupy, Nerdin, Jobgether, Glassdoor, Indeed, XING, WomenTechNetwork
+- "consultor SAP Analytics Cloud remoto Brasil 2026"
+USA / WORLDWIDE:
+- "SAP BW consultant remote USA 2026"
+- "SAP Datasphere consultant remote worldwide 2026"
+- "SAP Analytics Cloud consultant remote worldwide 2026"
+- "SAP BW4HANA consultant remote worldwide 2026"
+
+Sites a pesquisar (EUROPA/DACH): LinkedIn, RemoteRocketship, Remotive, StepStone, FreelancerMap, Duerenhoff, Ratbacher, Jobgether, XING, WomenTechNetwork, Remotely.de, Himalayas, EUremote.io, Wellfound
+Sites a pesquisar (BRASIL): Gupy, Catho, Vagas.com.br, LinkedIn BR, Indeed BR, RemoteRocketship BR, Nerdin
+Sites a pesquisar (USA / WORLDWIDE): LinkedIn, Indeed, Dice, ZipRecruiter, Glassdoor, Wellfound (AngelList), BuiltIn, SAPCareers (careers.sap.com), Remotive, Himalayas.app, Remote.co
 
 PASSO 3 — Filtrar e avaliar:
 Para cada vaga nova encontrada (ID não duplicado):
-- EXCLUIR obrigatoriamente vagas fora de DACH/EU/Brasil (ex: Índia, APAC, US, China)
+- INCLUIR vagas de: DACH, EU, Brasil, USA, Worldwide Remote
+- EXCLUIR vagas de: Índia, APAC, China, Médio Oriente (sem ligação a remote worldwide)
+- Definir o campo "region" como: "dach" | "eu" | "brazil" | "usa" | "worldwide"
 - Calcular match_score = (score_lingua * 0.40) + (score_tecnico * 0.55) + (score_regime * 0.05)
   - Scores de língua: Português=100, Inglês=95, Espanhol=70, Alemão=20, Francês=15, Outro=10
   - Score técnico: baseado no alinhamento com SAP BW/BW4HANA/Datasphere/SAC/BDC/HANA/ABAP/Databricks
   - Score regime: Remoto=100, Híbrido=75, Onsite=30
-- Gerar ID único em formato "empresa-stack-localidade" (ex: "sap-bw-consultant-germany")
+- Gerar ID único em formato "empresa-stack-localidade" (ex: "sap-bw-consultant-usa-remote")
 - Definir is_new: true, date_found: data de hoje (formato YYYY-MM-DD)
 
 PASSO 4 — Se houver vagas novas:
@@ -69,7 +84,7 @@ Não enviar email. Terminar após actualizar o last_updated.
 
 REGRAS IMPORTANTES:
 - Nunca remover vagas existentes do jobs.json
-- Nunca adicionar vagas com localização fora de DACH/EU/Brasil
+- Nunca adicionar vagas com localização fora de DACH/EU/Brasil/USA/Worldwide
 - Vagas com alemão obrigatório podem ser incluídas mas com match_score baixo (score_lingua=20)
 - O ficheiro index.html usa JOBS_DATA como const inline — actualizar apenas o objecto JSON dentro da const, não alterar o HTML/CSS/JS circundante
 '@
