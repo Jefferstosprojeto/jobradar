@@ -56,8 +56,11 @@ USA / WORLDWIDE:
 Sites a pesquisar (EUROPA/DACH): LinkedIn, RemoteRocketship, Remotive, StepStone, FreelancerMap, Duerenhoff, Ratbacher, Jobgether, XING, WomenTechNetwork, Remotely.de, Himalayas, EUremote.io, Wellfound, EURES (eures.europa.eu), Totaljobs, Monster, Jobat, InfoJobs
 Sites a pesquisar (BRASIL): Gupy, Catho, Vagas.com.br, LinkedIn BR, Indeed BR, RemoteRocketship BR, Nerdin, InfoJobs BR
 Sites a pesquisar (USA / WORLDWIDE): LinkedIn, Indeed, Dice, ZipRecruiter, Glassdoor, Wellfound (AngelList), BuiltIn, SAPCareers (careers.sap.com), Remotive, Himalayas.app, Remote.co, Monster
-Agências de trabalho e recrutamento a pesquisar (TODAS AS REGIÕES): Randstad, Adecco Group, ManpowerGroup, Kelly Services, Gi Group, Eurofirms Group, Synergie, Trenkwalder
-Consultoras e headhunters a pesquisar (TODAS AS REGIÕES): Michael Page, Hays, Robert Walters, Mercuri Urval, Robert Half, Korn Ferry, Spencer Stuart, Egon Zehnder
+Agências de trabalho e recrutamento a pesquisar (TODAS AS REGIÕES): Randstad, Adecco Group, ManpowerGroup, Kelly Services, Gi Group, Eurofirms Group, Synergie, Trenkwalder, Allegis Group, Insight Global, Innova Solutions, Kforce, Aerotek, TEKsystems, Aquent, Brunel International
+Consultoras e headhunters a pesquisar (TODAS AS REGIÕES): Michael Page, Hays, Robert Walters, Mercuri Urval, Robert Half, Korn Ferry, Spencer Stuart, Egon Zehnder, Heidrick & Struggles, Russell Reynolds Associates, Boyden, Odgers Berndtson, Stanton Chase, Amrop, PageGroup
+Especialistas SAP/ERP (ALTA PRIORIDADE): Nigel Frank International, Washington Frank, REVOLENT, FRG Technology Consulting, Frank Recruitment Group, Mason Frank International, Cognitive Group, Catch Resource Management, Whitehall Resources, Red Global
+EU Tech Staffing a pesquisar: Harvey Nash, SThree, Reed Recruitment, Badenoch+Clark, Spring Professional, Modis, Akkodis, Experis, Euro London Appointments, EMEA Recruitment, Tiger Recruitment, Approach People Recruitment, Grafton Recruitment, CPL Resources, Salt Recruitment, Antal International, Darwin Recruitment, Optimus Search, IC Resources, Empiric, Next Ventures, Sphere Digital Recruitment, Austin Fraser, Arrows Group, Client Server, Lawrence Harvey, Lorien, Xcede, Burns Sheehan, Venturi Group, Matchtech, IntaPeople, Morson International, NES Fircroft, Skillsearch, Technojobs, CWJobs, Jobserve
+US IT Staffing a pesquisar: Apex Systems, Collabera, Signature Consultants, Eliassen Group, Matrix Resources, Oxford Global Resources, Judge Group, Diversant, Digital Prospectors, Motion Recruitment, Rose International, eTeam, Softworld, Mindlance, SPECTRAFORCE, US Tech Solutions, Yoh Staffing, Beacon Hill Staffing, Vaco Search
 
 PASSO 3 — Filtrar e avaliar:
 Para cada vaga nova encontrada (ID não duplicado):
