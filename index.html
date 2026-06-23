@@ -171,6 +171,21 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 /* Page footer */
 .page-foot{padding:20px 28px;text-align:center;font-size:.68rem;color:var(--muted);border-top:1px solid var(--border)}
 
+/* ── AUTH OVERLAY ── */
+.auth-overlay{position:fixed;inset:0;z-index:9999;background:#080c12;display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:36px 40px;width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center;gap:20px;box-shadow:0 24px 80px rgba(0,0,0,.8)}
+.auth-logo{width:56px;height:56px;background:linear-gradient(135deg,#0ea5e9,#6366f1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.auth-title{font-size:1.05rem;font-weight:700;color:var(--text);text-align:center}
+.auth-sub{font-size:.78rem;color:var(--muted);text-align:center;margin-top:-12px}
+.auth-field{width:100%;display:flex;flex-direction:column;gap:6px}
+.auth-field label{font-size:.72rem;color:var(--muted2);font-weight:600;text-transform:uppercase;letter-spacing:.07em}
+.auth-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;color:var(--text);font-size:.9rem;outline:none;transition:border-color .15s}
+.auth-input:focus{border-color:var(--accent)}
+.auth-btn{width:100%;padding:12px;border-radius:8px;border:none;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;transition:opacity .15s}
+.auth-btn:hover{opacity:.85}
+.auth-err{font-size:.78rem;color:var(--red);text-align:center;min-height:18px;display:none}
+.auth-footer{font-size:.67rem;color:var(--muted);text-align:center}
+
 /* ── MOBILE SIDEBAR TOGGLE ── */
 .mob-sidebar-btn{display:none;align-items:center;gap:8px;padding:10px 16px;border-radius:0;border:none;border-bottom:1px solid var(--border);background:var(--surface2);color:var(--muted2);cursor:pointer;font-size:.82rem;font-weight:600;width:100%;text-align:left}
 .mob-sidebar-btn.open{color:var(--accent);background:#0c1a2e}
@@ -204,6 +219,24 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 </style>
 </head>
 <body>
+
+<!-- AUTH OVERLAY -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-card">
+    <div class="auth-logo">🎯</div>
+    <div style="text-align:center">
+      <div class="auth-title">Job Radar</div>
+      <div class="auth-sub">Jefferson Santos · Acesso privado</div>
+    </div>
+    <div class="auth-field">
+      <label for="authPwd">Password</label>
+      <input class="auth-input" id="authPwd" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkAuth()">
+    </div>
+    <div class="auth-err" id="authErr">Password incorrecta. Tente novamente.</div>
+    <button class="auth-btn" onclick="checkAuth()">Entrar</button>
+    <div class="auth-footer">Dashboard privado · dados pessoais protegidos</div>
+  </div>
+</div>
 
 <!-- HEADER -->
 <div class="header">
@@ -353,6 +386,27 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 <div class="page-foot">Job Radar · Jefferson Santos · Dados actualizados diariamente · <span id="ft-total">0</span> vagas · <span id="ft-sources">0</span> fontes</div>
 
 <script>
+// ── AUTH ──────────────────────────────────────────
+const _AH = '988ed804f1d3b3a30002b22dbe09a1e3faf01754245c37f32cd3d6c90c133aa3';
+async function checkAuth() {
+  const v = document.getElementById('authPwd').value;
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+  const h = Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
+  if (h === _AH) {
+    sessionStorage.setItem('jrAuth','1');
+    document.getElementById('authOverlay').style.display='none';
+  } else {
+    const e = document.getElementById('authErr');
+    e.style.display='block';
+    document.getElementById('authPwd').value='';
+    document.getElementById('authPwd').focus();
+    setTimeout(()=>{ e.style.display='none'; }, 3000);
+  }
+}
+if (sessionStorage.getItem('jrAuth')==='1') {
+  document.getElementById('authOverlay').style.display='none';
+}
+
 // ─────────────────────────────────────────────────
 // SOURCE COLOURS & ICONS
 // ─────────────────────────────────────────────────
