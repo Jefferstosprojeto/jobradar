@@ -53,9 +53,11 @@ USA / WORLDWIDE:
 - "SAP Analytics Cloud consultant remote worldwide 2026"
 - "SAP BW4HANA consultant remote worldwide 2026"
 
-Sites a pesquisar (EUROPA/DACH): LinkedIn, RemoteRocketship, Remotive, StepStone, FreelancerMap, Duerenhoff, Ratbacher, Jobgether, XING, WomenTechNetwork, Remotely.de, Himalayas, EUremote.io, Wellfound
-Sites a pesquisar (BRASIL): Gupy, Catho, Vagas.com.br, LinkedIn BR, Indeed BR, RemoteRocketship BR, Nerdin
-Sites a pesquisar (USA / WORLDWIDE): LinkedIn, Indeed, Dice, ZipRecruiter, Glassdoor, Wellfound (AngelList), BuiltIn, SAPCareers (careers.sap.com), Remotive, Himalayas.app, Remote.co
+Sites a pesquisar (EUROPA/DACH): LinkedIn, RemoteRocketship, Remotive, StepStone, FreelancerMap, Duerenhoff, Ratbacher, Jobgether, XING, WomenTechNetwork, Remotely.de, Himalayas, EUremote.io, Wellfound, EURES (eures.europa.eu), Totaljobs, Monster, Jobat, InfoJobs
+Sites a pesquisar (BRASIL): Gupy, Catho, Vagas.com.br, LinkedIn BR, Indeed BR, RemoteRocketship BR, Nerdin, InfoJobs BR
+Sites a pesquisar (USA / WORLDWIDE): LinkedIn, Indeed, Dice, ZipRecruiter, Glassdoor, Wellfound (AngelList), BuiltIn, SAPCareers (careers.sap.com), Remotive, Himalayas.app, Remote.co, Monster
+Agências de trabalho e recrutamento a pesquisar (TODAS AS REGIÕES): Randstad, Adecco Group, ManpowerGroup, Kelly Services, Gi Group, Eurofirms Group, Synergie, Trenkwalder
+Consultoras e headhunters a pesquisar (TODAS AS REGIÕES): Michael Page, Hays, Robert Walters, Mercuri Urval, Robert Half, Korn Ferry, Spencer Stuart, Egon Zehnder
 
 PASSO 3 — Filtrar e avaliar:
 Para cada vaga nova encontrada (ID não duplicado):
