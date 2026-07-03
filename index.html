@@ -216,6 +216,47 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
   .card-title{font-size:.86rem}
   .tip{top:auto;bottom:60px;right:0}
 }
+
+/* ── AUDIT BUTTON ── */
+.audit-trigger{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:var(--accent);border-radius:8px;padding:8px 14px;font-size:.76rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.audit-trigger:hover{background:rgba(56,189,248,.2);border-color:var(--accent)}
+
+/* ── AUDIT MODAL ── */
+.audit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:3000;display:flex;align-items:center;justify-content:center;padding:16px}
+.audit-overlay.hidden{display:none}
+.audit-modal{background:var(--surface);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:900px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.audit-head{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:16px}
+.audit-head h2{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.audit-legend{display:flex;gap:12px;font-size:.7rem}
+.audit-legend span{display:flex;align-items:center;gap:5px}
+.audit-body{overflow-y:auto;flex:1;padding:14px 20px}
+.audit-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-shrink:0;flex-wrap:wrap}
+.audit-summary{font-size:.78rem;color:var(--muted2)}
+.audit-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1px solid var(--border);margin-bottom:5px;transition:background .12s;cursor:default}
+.audit-row:hover{background:var(--surface2)}
+.audit-row.a-expired{border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.05)}
+.audit-row.a-warn{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.04)}
+.audit-row.a-ok{border-color:rgba(74,222,128,.2)}
+.audit-row.a-removed{opacity:.3;pointer-events:none}
+.audit-chk{width:15px;height:15px;accent-color:var(--red2);cursor:pointer;flex-shrink:0}
+.audit-info{flex:1;min-width:0}
+.audit-title{font-size:.8rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.audit-sub{font-size:.69rem;color:var(--muted);margin-top:1px}
+.audit-age{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0}
+.a-badge-ok{background:#052e16;color:#4ade80;border:1px solid #166534}
+.a-badge-warn{background:#1c1400;color:#fbbf24;border:1px solid #92400e}
+.a-badge-expired{background:#1f0606;color:#f87171;border:1px solid #991b1b}
+.audit-verify{font-size:.69rem;color:var(--accent);text-decoration:none;white-space:nowrap;flex-shrink:0;padding:3px 8px;border:1px solid rgba(56,189,248,.3);border-radius:5px}
+.audit-verify:hover{background:rgba(56,189,248,.1)}
+.btn-audit-rm{background:var(--red2);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-audit-rm:hover:not(:disabled){background:#b91c1c}
+.btn-audit-rm:disabled{opacity:.4;cursor:not-allowed}
+.btn-audit-exp{background:var(--surface2);border:1px solid var(--border2);color:var(--muted2);border-radius:8px;padding:8px 14px;font-size:.78rem;cursor:pointer;transition:all .15s}
+.btn-audit-exp:hover{color:var(--text);border-color:var(--accent)}
+.audit-select-all{font-size:.72rem;color:var(--muted2);cursor:pointer;background:none;border:none;padding:0;text-decoration:underline}
+.audit-select-all:hover{color:var(--text)}
+.audit-gh-link{font-size:.72rem;color:var(--green);text-decoration:none;border:1px solid rgba(74,222,128,.3);border-radius:6px;padding:5px 10px;background:rgba(74,222,128,.06)}
+.audit-gh-link:hover{background:rgba(74,222,128,.12)}
 </style>
 </head>
 <body>
@@ -251,6 +292,7 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
     <div class="meta-chip"><div class="val" id="hd-updated">—</div><div class="lbl">Atualizado</div></div>
     <div class="meta-chip"><div class="val" id="hd-sources">—</div><div class="lbl">Fontes</div></div>
     <div class="meta-chip"><div class="val" style="color:var(--green)">🔄</div><div class="lbl">Diário auto</div></div>
+    <button class="audit-trigger" onclick="openAudit()">🔍 Auditar Vagas</button>
   </div>
 </div>
 
@@ -899,7 +941,147 @@ function toggleMobSidebar() {
   btn.classList.toggle('open', open);
   btn.textContent = open ? '✕ Fechar filtros' : '⚙ Filtros & Fontes';
 }
+
+// ─────────────────────────────────────────────────
+// AUDIT
+// ─────────────────────────────────────────────────
+function jobAgeDays(job) {
+  const ref = job.date_found || job.date_posted || null;
+  if (!ref) return 999;
+  return Math.floor((Date.now() - new Date(ref)) / 86400000);
+}
+
+function ageClass(days) {
+  if (days <= 30) return 'a-ok';
+  if (days <= 60) return 'a-warn';
+  return 'a-expired';
+}
+
+function ageBadgeClass(days) {
+  if (days <= 30) return 'a-badge-ok';
+  if (days <= 60) return 'a-badge-warn';
+  return 'a-badge-expired';
+}
+
+function ageLabel(days) {
+  if (days <= 30) return `✓ ${days}d`;
+  if (days <= 60) return `⚠ ${days}d`;
+  return `✕ ${days}d`;
+}
+
+function openAudit() {
+  const overlay = document.getElementById('auditOverlay');
+  overlay.classList.remove('hidden');
+  renderAuditRows();
+}
+
+function closeAudit() {
+  document.getElementById('auditOverlay').classList.add('hidden');
+}
+
+function renderAuditRows() {
+  const sorted = [...allJobs].sort((a, b) => jobAgeDays(b) - jobAgeDays(a));
+  const container = document.getElementById('auditRows');
+  container.innerHTML = '';
+  sorted.forEach(job => {
+    const days = jobAgeDays(job);
+    const row = document.createElement('div');
+    row.className = `audit-row ${ageClass(days)}`;
+    row.id = `ar-${job.id}`;
+    const dateStr = job.date_found ? new Date(job.date_found).toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+    const postedStr = job.date_posted ? ` · postado: ${job.date_posted}` : '';
+    row.innerHTML = `
+      <input type="checkbox" class="audit-chk" id="chk-${job.id}" onchange="updateAuditCount()">
+      <div class="audit-info">
+        <div class="audit-title">${job.title} — ${job.company}</div>
+        <div class="audit-sub">${job.location || ''}${postedStr} · encontrado: ${dateStr}</div>
+      </div>
+      <span class="audit-age ${ageBadgeClass(days)}">${ageLabel(days)}</span>
+      <a href="${job.url}" target="_blank" rel="noopener" class="audit-verify">Verificar ↗</a>
+    `;
+    container.appendChild(row);
+  });
+  updateAuditCount();
+}
+
+function updateAuditCount() {
+  const checked = document.querySelectorAll('.audit-chk:checked').length;
+  document.getElementById('auditSelectedCount').textContent = checked;
+  document.getElementById('btnAuditRemove').disabled = checked === 0;
+}
+
+function selectAllAudit(filter) {
+  const rows = document.querySelectorAll('.audit-row');
+  rows.forEach(row => {
+    const id = row.id.replace('ar-', '');
+    const job = allJobs.find(j => j.id === id);
+    if (!job) return;
+    const days = jobAgeDays(job);
+    let shouldCheck = false;
+    if (filter === 'all') shouldCheck = true;
+    else if (filter === 'expired') shouldCheck = days > 60;
+    else if (filter === 'warn') shouldCheck = days > 30;
+    const chk = document.getElementById(`chk-${id}`);
+    if (chk) chk.checked = shouldCheck;
+  });
+  updateAuditCount();
+}
+
+function removeSelectedAudit() {
+  const toRemove = new Set(
+    [...document.querySelectorAll('.audit-chk:checked')].map(c => c.id.replace('chk-', ''))
+  );
+  if (toRemove.size === 0) return;
+  if (!confirm(`Remover ${toRemove.size} vaga(s) da lista local? Esta ação não afeta o ficheiro jobs.json no GitHub.`)) return;
+  allJobs = allJobs.filter(j => !toRemove.has(j.id));
+  applyFilters();
+  updateStats();
+  renderAuditRows();
+}
+
+function exportCleanJSON() {
+  const data = { meta: JOBS_DATA.meta, jobs: allJobs };
+  data.meta.last_updated = new Date().toISOString();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'jobs_clean.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 </script>
+
+<!-- AUDIT MODAL -->
+<div class="audit-overlay hidden" id="auditOverlay" onclick="if(event.target===this)closeAudit()">
+  <div class="audit-modal">
+    <div class="audit-head">
+      <h2>🔍 Auditoria de Vagas</h2>
+      <div class="audit-legend">
+        <span><span style="width:10px;height:10px;border-radius:50%;background:#4ade80;display:inline-block"></span> ≤30d ativo</span>
+        <span><span style="width:10px;height:10px;border-radius:50%;background:#fbbf24;display:inline-block"></span> 31-60d verificar</span>
+        <span><span style="width:10px;height:10px;border-radius:50%;background:#f87171;display:inline-block"></span> &gt;60d possivelmente expirado</span>
+      </div>
+      <button onclick="closeAudit()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:4px 8px;border-radius:6px">✕</button>
+    </div>
+    <div class="audit-body" id="auditRows"></div>
+    <div class="audit-foot">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="audit-select-all" onclick="selectAllAudit('expired')">Selecionar expirados (+60d)</button>
+        <span style="color:var(--border2)">·</span>
+        <button class="audit-select-all" onclick="selectAllAudit('warn')">Selecionar &gt;30d</button>
+        <span style="color:var(--border2)">·</span>
+        <button class="audit-select-all" onclick="selectAllAudit('all')">Todos</button>
+        <span style="color:var(--border2)">·</span>
+        <button class="audit-select-all" onclick="selectAllAudit('none');document.querySelectorAll('.audit-chk').forEach(c=>c.checked=false);updateAuditCount()">Nenhum</button>
+      </div>
+      <div class="audit-summary"><span id="auditSelectedCount">0</span> selecionados</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-audit-exp" onclick="exportCleanJSON()">⬇ Exportar JSON</button>
+        <button class="btn-audit-rm" id="btnAuditRemove" disabled onclick="removeSelectedAudit()">🗑 Remover selecionados</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
 
