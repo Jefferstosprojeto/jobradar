@@ -105,7 +105,9 @@ if (-not (Test-Path $ClaudeExe)) {
 }
 
 try {
-    $Output = & $ClaudeExe --print $Prompt 2>&1
+    $Output = & $ClaudeExe --print $Prompt `
+        --add-dir "$PSScriptRoot" `
+        --allowedTools "Read Write Edit WebSearch mcp__claude_ai_Gmail__create_draft" 2>&1
     Write-Log "Claude concluído."
     Add-Content -Path $LogFile -Value $Output -Encoding UTF8
 } catch {
@@ -133,26 +135,6 @@ try {
     Write-Log "AVISO git: $_"
 }
 
-# ── Redeploy Netlify via zip ───────────────────────────────
-Write-Log "A fazer redeploy no Netlify..."
-try {
-    $NetlifyToken = $env:NETLIFY_TOKEN
-    if (-not $NetlifyToken) { Write-Log "AVISO: NETLIFY_TOKEN não definido — deploy saltado."; return }
-    $SiteId       = "1223b23e-deca-4325-a328-440ab10ba805"
-    $ZipPath      = "$env:TEMP\jobradar-deploy.zip"
-
-    if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
-    Compress-Archive -Path "$PSScriptRoot\*" -DestinationPath $ZipPath -Force
-
-    $deployResult = curl.exe -s -X POST "https://api.netlify.com/api/v1/sites/$SiteId/deploys" `
-        -H "Authorization: Bearer $NetlifyToken" `
-        -H "Content-Type: application/zip" `
-        --data-binary "@$ZipPath"
-
-    $deployJson = $deployResult | ConvertFrom-Json
-    Write-Log "Netlify deploy state: $($deployJson.state) · id: $($deployJson.id)"
-} catch {
-    Write-Log "AVISO Netlify: $_"
-}
+Write-Log "Deploy: GitHub Pages publica automaticamente a partir do push para 'master' (sem passo manual)."
 
 Write-Log "=== Job Radar — Actualização concluída ==="
