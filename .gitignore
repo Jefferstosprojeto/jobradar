@@ -1,2 +1,4 @@
 logs/
 *.log
+new_jobs_tmp.json
+merge_tmp.py
